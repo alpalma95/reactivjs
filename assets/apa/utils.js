@@ -22,4 +22,3 @@ export const bindAttribute = (element, attrName, cb) => {
     let effect = hook(() => element.setAttribute(attrName, cb()))
     registerEffect(element, effect)
 }
-
