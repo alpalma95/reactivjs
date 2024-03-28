@@ -3,10 +3,9 @@ import { bindAttribute, registerEffect } from "./utils.js";
 
 const html = (tagName) => {
   return function (props, children = []) {
-    let element = {
+    let block = {
       element: document.createElement(tagName),
-      ctx: props,
-      children
+      ctx: props
     };
 
     if (typeof props != "object") {
@@ -14,27 +13,26 @@ const html = (tagName) => {
       props = {};
     }
 
-    let currentDirective;
     for (const attr in props) {
-      currentDirective = directives[attr];
+      let currentDirective = directives[attr];
       const isEventHandler = attr.startsWith('on') && typeof props[attr] === 'function';
 
       if (currentDirective) {
-        let effect = currentDirective.construct(element, props[attr]);
-        registerEffect(element, effect);
+        let effect = currentDirective.construct(block, props[attr]);
+        registerEffect(block.element, effect);
         continue;
       }
 
       if (!currentDirective && typeof props[attr] === "function" && !isEventHandler) {
-        bindAttribute(element.element, attr, props[attr]);
+        bindAttribute(block.element, attr, props[attr]);
         continue;
       }
       if (isEventHandler) {
-        element.element.addEventListener(attr.slice(2), props[attr])
+        block.element.addEventListener(attr.slice(2), props[attr])
         continue;
       }
       
-      element.element.setAttribute(attr, props[attr]);
+      block.element.setAttribute(attr, props[attr]);
     }
     if (children.length) {
       children.forEach((child) => {
@@ -44,11 +42,10 @@ const html = (tagName) => {
           ? (currentNode = child)
           : (currentNode = new Text(child));
         
-        element.element.appendChild(currentNode);
-        
+        block.element.appendChild(currentNode);
       });
     }
-    return element.replaceWith ?? element.element;
+    return block.replaceWith ?? block.element;
   };
 };
 
