@@ -9,19 +9,10 @@
   </head>
   <body>
     <div ref="app">
-      app
-      <br>
-      <span ref="count"> app > count</span>
-      <div ref="text">
-        app > text
-        <br>
-        <span ref="count"> app > text > count</span>
-      </div>
-      <ul ref="list">
-        <li ref="listItem"></li>
-        <li ref="listItem"></li>
-        <li ref="listItem"></li>
-      </ul>
+        <div ref="counter">
+            <span ref="count">0</span>
+            <button ref="incButton">Inc count</button>
+        </div>
     </div>
   </body>
 </html>

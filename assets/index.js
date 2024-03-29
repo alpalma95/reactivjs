@@ -1,6 +1,7 @@
 import "./lib/controllerLoader.js";
-import { h } from "./apa/factory.js";
+import { h } from "./apa/factories/factory.js";
 import { stream, hook } from "./apa/streams.js";
+import { $ } from "./apa/factories/select.js";
 
 const $list = stream([
     {
@@ -155,47 +156,9 @@ const App = () =>
 
 // document.body.appendChild(App());
 
-const select = (refName) => (props, children) => {
-    return function (parent = document) {
-        const queryStr = `[ref="${refName}"]`;
-        props ??= {};
-        children ??= [];
-
-        if (Array.isArray(parent)) {
-            parent.forEach((p) => {
-                const currentElement = [...p.querySelectorAll(queryStr)];
-                console.log(currentElement);
-                children.forEach((child) => child(currentElement));
-            });
-            return;
-        }
-        const currentElement = [...parent.querySelectorAll(queryStr)];
-        console.log(currentElement);
-        children.forEach((child) => child(currentElement));
-    };
-};
-
-const $ = new Proxy(
-    {},
-    {
-        get: function (target, value) {
-            if (!target[value]) Reflect.set(target, value, select(value));
-            return target[value];
-        },
-    }
-);
+const $count = stream(0)
 
 $.app({}, [
-    $.count(), // this will select the two spans with ref=count
-    $.text({}, [
-        $.count() // this will only select the span with ref=count inside div ref=text
-    ])
-])()
-
-console.log('next selector')
-
-$.app({}, [
-    $.list({}, [
-        $.listItem()
-    ])
+    $.count({ 'data-text': () => $count.val, 'test': 'v' }),
+    $.incButton({ onclick: () => $count.val++ })
 ])()
