@@ -1,59 +1,36 @@
-import { switchProps } from "../utils.js";
-import { hydrate } from "./shared.js";
+import { hydrate } from "./shared.js"
 
-/**
- * Hydrate all the given elements
- * @param {HTMLElement} rootElement Element inside of which we're performing the querySelector
- * @param {object} props Properties to be used in the hydration function
- * @param {()=>{}} children Nested selectors thet will be called automatically with a parent
- * @param {string} queryStr Reference selector, to be queried inside the given parent element
- */
-const processBlock = (rootElement, props, children, queryStr) => {
-    const currentElement = [...rootElement.querySelectorAll(queryStr)];
-    
-    currentElement.forEach( (element) => {  
-        const block = {
-            element,
-            ctx: props
-        }
-    
-        hydrate(block)
-    })
-    children.forEach((child, i) => {
-        console.log(currentElement)
+class Mountable extends Array {
+    constructor(iterable) {
+        super()
+        this.iterable = iterable
+    }
 
-            return child instanceof HTMLElement || child instanceof DocumentFragment
-            ? currentElement.forEach( (element) => element.appendChild(child)) 
-            : child(currentElement)
-
-        }
-    );
-
+    mount(component) {
+        this.iterable.forEach( (element) => component(element))
+    }
 }
 
-const select = (refName) => (props_raw, children_raw = []) => {
-    return function (parent = [document]) {
-        let [props, children] = switchProps(props_raw, children_raw)
-
-        const queryStr = `[ref="${refName}"]`;
-
-        if (Array.isArray(parent)) {
-            parent.forEach((p) => {
-                processBlock(p, props, children, queryStr)
-            });
-            return;
-        }
-
-        processBlock(parent, props, children, queryStr)
-
-    };
-};
-
-export const $ = new Proxy(
-    {},
-    {
-        get: function (target, value) {
-            return select(value);
-        },
+const proxify = (root = document) => new Proxy({}, {
+    get: (_, value) => function (ctx = {}) {
+        const found = [... root.querySelectorAll(`[ref="${value}"]`)]
+        
+        found.forEach( (element) => {
+            hydrate({element, ctx})
+            element.$ = proxify(element)
+            element.mount = function(component) {
+                component(element)
+            }
+            // TODO: In case we want to bind any state to the component from inside it. Since it'll affect all instances, still deciding if it's useful
+            element.h = function(ctx) {
+                hydrate({element, ctx})
+            }
+        } )
+        return found.length === 1 ? found[0] : new Mountable(found)
     }
-);
+})
+
+export const $ = proxify()
+
+// $.ref(ctx) ---> hydrates as originally intended
+// $.ref().mount(Component())

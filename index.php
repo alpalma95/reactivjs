@@ -8,13 +8,14 @@
     <script type="module" src="/assets/index.js" defer></script>
   </head>
   <body>
+    <div ref="count"></div>
     <div ref="app">
-        <div ref="counter">
-            <span ref="count" data-initial-count="1" style="display: none;">0</span>
+        <div ref="Counter">
+            <span ref="count" data-initial-count="1"">0</span>
             <button ref="incButton">Inc count</button>
         </div>
-        <div ref="counter">
-            <span ref="count" data-initial-count="2" style="display: none;">0</span>
+        <div ref="Counter">
+            <span ref="count" data-initial-count="2"">0</span>
             <button ref="incButton">Inc count</button>
         </div>
     </div>

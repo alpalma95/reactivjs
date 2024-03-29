@@ -154,32 +154,18 @@ const App = () =>
         Counter(),
     ]);
 
-const $count = stream(0)
-
-const CounterDOM = () => {
-  const $count = stream(0)
-
-  return ([
-      $.count({ 
-        'data-text': () => $count.val,
-        'init': ({dataset}) =>  console.log(dataset), 
-        'data-show': () => $count.val > 0
-      }),
-      $.incButton({ onclick: () => $count.val++ }),
-  ])
-}
-
 // [... document.querySelectorAll("[ref='counter']")].forEach( (counterElement) => {
 //   CounterDOM().forEach((el) => el(counterElement))
 // })
 
-$.app([
-    // $.count({ 
-    //   'data-text': () => $count.val,
-    //   'init': ({dataset}) =>  console.log(dataset), 
-    //   'data-show': () => $count.val > 0
-    // }),
-    // $.incButton({ onclick: () => $count.val++ }),
-    // App()
-    $.counter(CounterDOM())
-])()
+const $Counter = function({ $ }) {
+    let $count = stream(0)
+
+    $.count({'data-text': () => $count.val, 'data-show': () => true}),
+    $.incButton({'onclick': () => $count.val++})
+    
+}
+
+console.log($.Counter({'hi': 'madafaka'}).mount($Counter))
+// console.log($.app().$.count({'data-text': () => count.val}))
+// $.app({'te': 'st'}).$.incButton({ onclick: () => count.val++ })
