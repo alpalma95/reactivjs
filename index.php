@@ -10,7 +10,11 @@
   <body>
     <div ref="app">
         <div ref="counter">
-            <span ref="count">0</span>
+            <span ref="count" data-initial-count="1" style="display: none;">0</span>
+            <button ref="incButton">Inc count</button>
+        </div>
+        <div ref="counter">
+            <span ref="count" data-initial-count="2" style="display: none;">0</span>
             <button ref="incButton">Inc count</button>
         </div>
     </div>

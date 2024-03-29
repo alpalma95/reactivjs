@@ -5,17 +5,22 @@ export const hydrate = (block) => {
     // Block.ctx will always default to empty object. If that's the case, 
     // the loop operation will never take place. We don't need to perform
     // additional checks for early return.
-    
+
     for (const attr in block.ctx) {
       let currentDirective = directives[attr];
       const isEventHandler = attr.startsWith('on') && typeof block.ctx[attr] === 'function';
   
+      // TODO: "Magic methods, we sall look for a better place for them"
+      if(attr === 'init')  {
+        block.ctx[attr](block.element);
+        continue;
+      }
       if (currentDirective) {
         let effect = currentDirective.construct(block, block.ctx[attr]);
         registerEffect(block.element, effect);
         continue;
       }
-  
+
       if (!currentDirective && typeof block.ctx[attr] === "function" && !isEventHandler) {
         bindAttribute(block.element, attr, block.ctx[attr]);
         continue;

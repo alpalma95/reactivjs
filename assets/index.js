@@ -145,7 +145,7 @@ const TestIf = () => {
 };
 
 const App = () =>
-    h.div({ id: "app" }, [
+    h.fr([
         TestIf(),
         AddBtn(),
         SortButton(),
@@ -154,11 +154,32 @@ const App = () =>
         Counter(),
     ]);
 
-// document.body.appendChild(App());
-
 const $count = stream(0)
 
-$.app({}, [
-    $.count({ 'data-text': () => $count.val, 'test': 'v' }),
-    $.incButton({ onclick: () => $count.val++ })
+const CounterDOM = () => {
+  const $count = stream(0)
+
+  return ([
+      $.count({ 
+        'data-text': () => $count.val,
+        'init': ({dataset}) =>  console.log(dataset), 
+        'data-show': () => $count.val > 0
+      }),
+      $.incButton({ onclick: () => $count.val++ }),
+  ])
+}
+
+// [... document.querySelectorAll("[ref='counter']")].forEach( (counterElement) => {
+//   CounterDOM().forEach((el) => el(counterElement))
+// })
+
+$.app([
+    // $.count({ 
+    //   'data-text': () => $count.val,
+    //   'init': ({dataset}) =>  console.log(dataset), 
+    //   'data-show': () => $count.val > 0
+    // }),
+    // $.incButton({ onclick: () => $count.val++ }),
+    // App()
+    $.counter(CounterDOM())
 ])()

@@ -1,16 +1,14 @@
+import { switchProps } from "../utils.js";
 import { hydrate } from "./shared.js";
 
 const html = (tagName) => {
-  return function (props, children = []) {
+  return function (props_raw, children_raw = []) {
+    let [props, children] = switchProps(props_raw, children_raw)
+
     let block = {
-      element: document.createElement(tagName),
+      element: tagName === 'fr' ? new DocumentFragment() : document.createElement(tagName),
       ctx: props
     };
-
-    if (typeof props != "object") {
-      children.push(props);
-      props = {};
-    }
 
     hydrate(block)
    

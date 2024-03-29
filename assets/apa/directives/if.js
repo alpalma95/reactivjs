@@ -8,8 +8,8 @@ export const ifDirective = {
     return hook(() => {
        // Check if the element is being newly created and binding evaluates to false
         if (!binding() && !block.element.isConnected) block.replaceWith = comment
-        if (comment.isConnected && binding()) comment.replaceWith(block.element)
-        if (block.element.isConnected && !binding()) block.element.replaceWith(comment)
+        if (comment.isConnected && binding(block.element)) comment.replaceWith(block.element)
+        if (block.element.isConnected && !binding(block.element)) block.element.replaceWith(comment)
     });
   },
 };

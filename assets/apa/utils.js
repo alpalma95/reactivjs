@@ -19,6 +19,15 @@ export const registerEffect = (element, effect) =>
     : element.effects.push(effect);
 
 export const bindAttribute = (element, attrName, cb) => {
-    let effect = hook(() => element.setAttribute(attrName, cb()))
+    let effect = hook(() => element.setAttribute(attrName, cb(element)))
     registerEffect(element, effect)
+}
+
+export const switchProps = (props, children) => {
+    if (Array.isArray(props)) {
+        children = props;
+        props = {};
+      }
+      return [props, children]
+
 }

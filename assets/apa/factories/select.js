@@ -1,3 +1,4 @@
+import { switchProps } from "../utils.js";
 import { hydrate } from "./shared.js";
 
 /**
@@ -9,22 +10,32 @@ import { hydrate } from "./shared.js";
  */
 const processBlock = (rootElement, props, children, queryStr) => {
     const currentElement = [...rootElement.querySelectorAll(queryStr)];
-    currentElement.forEach( (element) => {
-        let block = {
+    
+    currentElement.forEach( (element) => {  
+        const block = {
             element,
             ctx: props
         }
+    
         hydrate(block)
     })
-    children.forEach((child) => child(currentElement));
+    children.forEach((child, i) => {
+        console.log(currentElement)
+
+            return child instanceof HTMLElement || child instanceof DocumentFragment
+            ? currentElement.forEach( (element) => element.appendChild(child)) 
+            : child(currentElement)
+
+        }
+    );
+
 }
 
-const select = (refName) => (props, children) => {
-    return function (parent = document) {
+const select = (refName) => (props_raw, children_raw = []) => {
+    return function (parent = [document]) {
+        let [props, children] = switchProps(props_raw, children_raw)
+
         const queryStr = `[ref="${refName}"]`;
-        
-        props ??= {};
-        children ??= [];
 
         if (Array.isArray(parent)) {
             parent.forEach((p) => {
@@ -42,8 +53,7 @@ export const $ = new Proxy(
     {},
     {
         get: function (target, value) {
-            if (!target[value]) Reflect.set(target, value, select(value));
-            return target[value];
+            return select(value);
         },
     }
 );

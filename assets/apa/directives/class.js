@@ -6,10 +6,10 @@ export const classDirective = {
     const effects = [];
     for (let [className, binding] of Object.entries(classObject)) {
       let effect = hook(() => {
-        if (!element.classList.contains(className) && binding())
+        if (!element.classList.contains(className) && binding(element))
           element.classList.add(className);
 
-        if (element.classList.contains(className) && !binding())
+        if (element.classList.contains(className) && !binding(element))
           element.classList.remove(className);
       });
 
