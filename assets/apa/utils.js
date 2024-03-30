@@ -15,6 +15,8 @@ export const registerEffect = (element, effect) =>
  * @param {HTMLElement} Element Element to remove from the DOM
  */
 export const safeRemove = (element) => {
+    if (typeof element.destroy === 'function') element.destroy(element)
+
     DOMEffectsMap.get(element)?.forEach((effect) => {
         Array.isArray(effect)
             ? effect.forEach((nestedEffect) => nestedEffect.unhook())

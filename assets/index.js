@@ -71,7 +71,7 @@ const deletePerson = (id, e) => {
 };
 
 const personView = (person) =>
-    h.li({ "data-key": person.id }, [
+    h.li({ "data-key": person.id, 'init': () => console.log('person added id', person.id), 'destroy': () => console.log("person removed id", person.id) }, [
         `${person.name} with id ${person.id} `,
         h.button({ onclick: (e) => deletePerson(person.id, e) }, [
             `Delete person ${person.id}`,
@@ -152,10 +152,11 @@ const App = () =>
         TestIf(),
         AddBtn(),
         SortButton(),
-        h.ul({ "data-for": [$list, personView], "data-track-by": "id" }),
+        h.ul({ "data-for": [$list, personView], "data-track-by": "id"}),
         Counter({ "data-whatever": "test1" }), // to be merged with the root element of the component
         Counter(),
     ]);
+
 
 const $Counter = function({ $, dataset }) {
     let count = stream(+dataset.initialCount)

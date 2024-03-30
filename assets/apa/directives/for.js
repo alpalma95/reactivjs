@@ -19,6 +19,7 @@ const diffList = (array, DOMNode, template = null) => {
     deleted.forEach((node) => {
       safeRemove(DOMNode.querySelector(`[data-key="${node.dataset.key}"]`));
     });
+    
     return;
   }
 
@@ -27,13 +28,14 @@ const diffList = (array, DOMNode, template = null) => {
 
     const isEqual = element[trackBy] == children[index].dataset.key;
     const areSameLength = array.length === children.length;
+    const queryStr = `[data-key="${element[trackBy]}"]`
 
     if (!isEqual && areSameLength) {
-      const newNode = template(element);
+      const newNode = DOMNode.querySelector(queryStr) ?? template(element);
       DOMNode.replaceChild(newNode, children[index]);
     }
     if (!isEqual && !areSameLength) {
-      const newNode = template(element);
+      const newNode = DOMNode.querySelector(queryStr) ?? template(element);
       DOMNode.insertBefore(newNode, children[index]);
     }
   });

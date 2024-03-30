@@ -13,8 +13,16 @@ export const hydrate = (block) => {
       // TODO: "Magic methods, we shall look for a better place for them"
       if(attr === 'init')  {
         block.ctx[attr](block.element);
+        block.element.init = block.ctx[attr]
         continue;
       }
+
+      if (attr === 'destroy') {
+        block.element.destroy = block.ctx[attr]
+        continue;
+      }
+      // end of magic methods
+
       if (currentDirective) {
         let effect = currentDirective.construct(block, block.ctx[attr]);
         registerEffect(block.element, effect);
