@@ -1,7 +1,4 @@
-import "./lib/controllerLoader.js";
-import { h } from "./apa/factories/factory.js";
-import { stream, hook } from "./apa/streams.js";
-import { $ } from "./apa/factories/select.js";
+import { h, stream, $ } from "./src/";
 
 const $list = stream([
     {

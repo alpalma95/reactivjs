@@ -14,3 +14,7 @@ const directivesRaw = [
 export const directives = Object.fromEntries(
   directivesRaw.map((directive) => [directive.selector, directive])
 );
+
+export const registerDirective = (directive) => {
+  directivesRaw.push(directive)
+}
