@@ -1,4 +1,4 @@
-import { h, stream, $ } from "./src/";
+import { h, stream, $ } from "./dist/reactivity.es";
 
 const $list = stream([
     {

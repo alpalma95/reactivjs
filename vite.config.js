@@ -11,8 +11,7 @@ export default defineConfig({
             fileName: (format) => `reactivity.${format}.js`,
         },
         rollupOptions: {
-          
-            input: 'index.js',
+            input: 'src/index.js',
           },
     },
     test: {
