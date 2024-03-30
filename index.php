@@ -8,14 +8,15 @@
     <script type="module" src="/assets/index.js" defer></script>
   </head>
   <body>
-    <div ref="count"></div>
+    <h1> Generated server side </h1>
     <div ref="app">
-        <div ref="Counter">
-            <span ref="count" data-initial-count="1"">0</span>
+        <!-- "Props" are just dataset properties -->
+        <div ref="Counter" data-initial-count="1">
+            <span ref="count">0</span>
             <button ref="incButton">Inc count</button>
         </div>
-        <div ref="Counter">
-            <span ref="count" data-initial-count="2"">0</span>
+        <div ref="Counter" data-initial-count="2">
+            <span ref="count">0</span>
             <button ref="incButton">Inc count</button>
         </div>
     </div>

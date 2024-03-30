@@ -145,7 +145,10 @@ const TestIf = () => {
 };
 
 const App = () =>
-    h.fr([
+    h.fragment([
+        h.h2([ 
+            "Generated client side"
+        ]),
         TestIf(),
         AddBtn(),
         SortButton(),
@@ -154,18 +157,16 @@ const App = () =>
         Counter(),
     ]);
 
-// [... document.querySelectorAll("[ref='counter']")].forEach( (counterElement) => {
-//   CounterDOM().forEach((el) => el(counterElement))
-// })
+const $Counter = function({ $, dataset }) {
+    let count = stream(+dataset.initialCount)
 
-const $Counter = function({ $ }) {
-    let $count = stream(0)
+    $.count({'data-text': () => count.val, 'data-if': () => count.val > 0}),
+    $.incButton({'onclick': () => count.val++})
 
-    $.count({'data-text': () => $count.val, 'data-show': () => true}),
-    $.incButton({'onclick': () => $count.val++})
-    
 }
 
-console.log($.Counter({'hi': 'madafaka'}).mount($Counter))
+$.app([App()])
+
+$.Counter({'hi': 'madafaka'}).mount($Counter)
 // console.log($.app().$.count({'data-text': () => count.val}))
 // $.app({'te': 'st'}).$.incButton({ onclick: () => count.val++ })

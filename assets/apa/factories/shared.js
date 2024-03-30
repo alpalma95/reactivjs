@@ -10,7 +10,7 @@ export const hydrate = (block) => {
       let currentDirective = directives[attr];
       const isEventHandler = attr.startsWith('on') && typeof block.ctx[attr] === 'function';
   
-      // TODO: "Magic methods, we sall look for a better place for them"
+      // TODO: "Magic methods, we shall look for a better place for them"
       if(attr === 'init')  {
         block.ctx[attr](block.element);
         continue;
@@ -32,4 +32,19 @@ export const hydrate = (block) => {
       
       block.element.setAttribute(attr, block.ctx[attr]);
     }
+}
+
+export const appendChildren = (element, children) => {
+  if (children.length) {
+    children.forEach((child) => {
+      let currentNode;
+      child instanceof HTMLElement 
+      || child instanceof Comment
+      || child instanceof DocumentFragment
+        ? (currentNode = child)
+        : (currentNode = new Text(child));
+    
+      element.appendChild(currentNode);
+    });
   }
+}

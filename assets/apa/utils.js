@@ -1,33 +1,38 @@
-import { hook } from "./streams.js"
+import { hook } from "./streams.js";
 
-/**
- * Remove the given element as well as the effects associated with it
- * @param {HTMLElement} Element Element to remove from the DOM 
- */
-export const safeRemove = (element) => {
-    element.effects?.forEach( (effect) => {
-        Array.isArray(effect) 
-        ? effect.forEach( (nestedEffect) => nestedEffect.unhook() ) 
-        : effect.unhook()
-    })
-    element?.remove()
-}
+// TODO: Global WeakMap with all needed effects. We shall look for a better place
+/** @type {WeakMap<HTMLElement, Array>} */
+const DOMEffectsMap = new WeakMap();
 
 export const registerEffect = (element, effect) => 
-    !element.effects 
-    ? element.effects = [effect] 
-    : element.effects.push(effect);
+    DOMEffectsMap.has(element) ?
+    DOMEffectsMap.get(element).push(effect)
+    : DOMEffectsMap.set(element, [effect])
+
+
+/**
+ * Remove the given element as well as the effects associated with it found in the weakmap
+ * @param {HTMLElement} Element Element to remove from the DOM
+ */
+export const safeRemove = (element) => {
+    DOMEffectsMap.get(element)?.forEach((effect) => {
+        Array.isArray(effect)
+            ? effect.forEach((nestedEffect) => nestedEffect.unhook())
+            : effect.unhook();
+    });
+    DOMEffectsMap.delete(element)
+    element?.remove();
+};
 
 export const bindAttribute = (element, attrName, cb) => {
-    let effect = hook(() => element.setAttribute(attrName, cb(element)))
-    registerEffect(element, effect)
-}
+    let effect = hook(() => element.setAttribute(attrName, cb(element)));
+    registerEffect(element, effect);
+};
 
 export const switchProps = (props, children) => {
     if (Array.isArray(props)) {
         children = props;
         props = {};
-      }
-      return [props, children]
-
-}
+    }
+    return [props, children];
+};

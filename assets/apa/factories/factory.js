@@ -1,28 +1,18 @@
 import { switchProps } from "../utils.js";
-import { hydrate } from "./shared.js";
+import { appendChildren, hydrate } from "./shared.js";
 
 const html = (tagName) => {
   return function (props_raw, children_raw = []) {
     let [props, children] = switchProps(props_raw, children_raw)
 
     let block = {
-      element: tagName === 'fr' ? new DocumentFragment() : document.createElement(tagName),
+      element: tagName === 'fragment' ? new DocumentFragment() : document.createElement(tagName),
       ctx: props
     };
 
     hydrate(block)
-   
-    if (children.length) {
-      children.forEach((child) => {
-        let currentNode;
-
-        child instanceof HTMLElement || child instanceof Comment
-          ? (currentNode = child)
-          : (currentNode = new Text(child));
-        
-        block.element.appendChild(currentNode);
-      });
-    }
+    appendChildren(block.element, children)
+    
     return block.replaceWith ?? block.element;
   };
 };
