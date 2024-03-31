@@ -1,6 +1,6 @@
 {
   "name": "reactivity",
-  "version": "1.0.1",
+  "version": "0.0.1",
   "description": "Minimalistic reactivity engine for CSR and SSR",
   "main": "/src/index.js",
   "type": "module",

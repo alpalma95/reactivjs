@@ -1,4 +1,6 @@
 # reactivity
 > still deciding a name tbh
 
-WIP! 🚧
+Minimalistic reactivity engine for CSR and SSR. Heavily inspired by jQuery, AlpineJS and VanJS.
+
+## WIP! 🚧
