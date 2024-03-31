@@ -20,8 +20,7 @@ const createSelectProxy = (root = document) => new Proxy({}, {
             element.mount = function(component) {
                 component(element)
             }
-            // TODO: In case we want to bind any state to the component from inside it. Since it'll affect all instances, still deciding if it's useful
-            element.state = function(ctx) {
+            element.props = function(ctx) {
                 hydrate({element, ctx})
                 appendChildren(element, children)
             }

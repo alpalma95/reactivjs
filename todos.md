@@ -1,9 +1,7 @@
 # Todos
 ## Ideas that come into my mind while coding but don't want to get distracted from the main task hehe
 
-- when data-for list is generated server side, automatically populate the state to be synced
-    - if that's the case, we don't provide a template, but it's generated based on a given html element. Instead we provide a hydration component
-    - create function 'createFromTemplate' -> creates a virtual copy to be used in the data-for element (created from document fragment)
+- data-for: refactor logic for SSR list. So far it works, but: 1) code is a bit messy and 2) the ref name gets changed with the key. Not a big deal though, but I'd rather it be more coherent
 
 - data-for: when sorting, the first element gets replaced first hence it needs to be created at the end of the diffing.
 easy to work around and not really expensive, so holding it for now

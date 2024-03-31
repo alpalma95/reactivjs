@@ -1,4 +1,4 @@
-import { h, stream, $ } from "./dist/reactivity.es";
+import { h, stream, $ } from "./src";
 
 const $list = stream([
     {
@@ -164,5 +164,46 @@ const $Counter = function({ $, dataset }) {
 }
 
 $.app([App()])
+// Trying out data-for in SSR
+let peopleSSR = stream([])
+$.addPersonSSR().mount(function (el) {
+    let currentId = stream(() =>
+        peopleSSR.val.length < 1
+            ? 1
+            : Math.max(...peopleSSR.val.map((person) => person.id)) + 1
+    );
 
+    const add = () => {
+        peopleSSR.val = [
+            ...peopleSSR.val,
+            {
+                id: currentId.val,
+                name: `Person ${currentId.val}`,
+            },
+        ];
+    };
+    el.props({ onclick: add })
+})
+$.sortSSR().mount( function (el) {
+    function sortList() {
+        peopleSSR.val = [
+            ...peopleSSR.val.sort((person1, person2) => person2.id - person1.id),
+        ];
+    }
+
+    el.props({ onclick: sortList })
+})
 $.Counter({'hi': 'there'}).mount($Counter)
+$.peopleSSR().mount( function(element) {
+    
+    let listItem = (person) => function(item) {
+        item.props({'data-key': person.id})
+        item.$.personName({'data-text': () => person.name})
+        item.$.personId({ 'data-text': () => person.id })
+        item.$.deleteBtn({ onclick: () => peopleSSR.val = [...peopleSSR.val.filter((p) => p.id !== person.id)] })
+    }
+    // important to set track by first if we don't set it on the html
+    element.props({'data-track-by': 'id', 'data-for': [peopleSSR, listItem]})
+
+})
+
