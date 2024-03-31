@@ -5,8 +5,10 @@
   "main": "/src/index.js",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && bun ./scripts/minify.js && gzip -c dist/reactivity.es.min.js > dist/reactivity.es.min.gz && cp ./src/main.d.ts ./dist/reactivity.es.d.ts && cp ./src/main.d.ts ./dist/reactivity.es.min.d.ts",
+    "dev": "bunx --bun vite",
+    "build": "bunx --bun vite build && bun ./scripts/minify.js && gzip -c dist/reactivity.es.min.js > dist/reactivity.es.min.gz && cp ./src/main.d.ts ./dist/reactivity.es.d.ts && cp ./src/main.d.ts ./dist/reactivity.es.min.d.ts",
+    "dev:node" : "vite",
+    "build:node": "vite build && node ./scripts/minify.js && gzip -c dist/reactivity.es.min.js > dist/reactivity.es.min.gz && cp ./src/main.d.ts ./dist/reactivity.es.d.ts && cp ./src/main.d.ts ./dist/reactivity.es.min.d.ts",
     "preview": "vite preview",
     "test": "vitest run"
   },

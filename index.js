@@ -165,6 +165,4 @@ const $Counter = function({ $, dataset }) {
 
 $.app([App()])
 
-$.Counter({'hi': 'madafaka'}).mount($Counter)
-// console.log($.app().$.count({'data-text': () => count.val}))
-// $.app({'te': 'st'}).$.incButton({ onclick: () => count.val++ })
+$.Counter({'hi': 'there'}).mount($Counter)
