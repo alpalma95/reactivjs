@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite",
-    "build": "bunx --bun vite build && bun ./scripts/minify.js && gzip -c dist/reactivity.es.min.js > dist/reactivity.es.min.gz && cp ./src/main.d.ts ./dist/reactivity.es.d.ts && cp ./src/main.d.ts ./dist/reactivity.es.min.d.ts",
+    "build": "bunx --bun vite build && bun ./scripts/minify.js && gzip -c dist/reactivity.es.min.js > dist/reactivity.es.min.gz",
     "dev:node" : "vite",
-    "build:node": "vite build && node ./scripts/minify.js && gzip -c dist/reactivity.es.min.js > dist/reactivity.es.min.gz && cp ./src/main.d.ts ./dist/reactivity.es.d.ts && cp ./src/main.d.ts ./dist/reactivity.es.min.d.ts",
+    "build:node": "vite build && node ./scripts/minify.js && gzip -c dist/reactivity.es.min.js > dist/reactivity.es.min.gz",
     "preview": "vite preview",
     "test": "vitest run"
   },

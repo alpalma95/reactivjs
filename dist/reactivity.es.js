@@ -11,12 +11,12 @@ let a = (t) => {
   u = new A(t), u.cb();
   let e = u;
   return u = null, e;
-}, L = (t, e) => {
+}, S = (t, e) => {
   if (u === null)
     return;
   let n;
   h.has(t) ? n = h.get(t).get(e) : h.set(t, /* @__PURE__ */ new Map([[e, n = /* @__PURE__ */ new Set()]])), u._set.add(n), n.add(u);
-}, S = (t, e, n) => {
+}, L = (t, e, n) => {
   if (!h.get(t))
     return;
   h.get(t).get(e).forEach(({ cb: s }) => s(n));
@@ -37,12 +37,12 @@ let a = (t) => {
   let e = W(t);
   return new Proxy(e, {
     get(n, r, s) {
-      return L(n, r), Reflect.get(n, r, s);
+      return S(n, r), Reflect.get(n, r, s);
     },
     set(n, r, s, c) {
       if (n[r] !== s) {
         let o = n[r];
-        Reflect.set(n, r, s, c), S(n, r, o);
+        Reflect.set(n, r, s, c), L(n, r, o);
       }
       return !0;
     }
@@ -68,7 +68,7 @@ const y = /* @__PURE__ */ new WeakMap(), w = (t, e) => y.has(t) ? y.get(t).push(
     }
     return n;
   }
-}, R = (t, e, n = null) => {
+}, P = (t, e, n = null) => {
   const r = e.children, { trackBy: s } = e.dataset;
   if (t.length < r.length) {
     [...r].filter(
@@ -90,14 +90,14 @@ const y = /* @__PURE__ */ new WeakMap(), w = (t, e) => y.has(t) ? y.get(t).push(
       e.insertBefore(p, r[o]);
     }
   });
-}, $ = {
+}, R = {
   selector: "data-for",
   construct: function({ element: t }, e) {
     return a(() => {
-      R(e.at(0).val, t, e.at(-1));
+      P(e.at(0).val, t, e.at(-1));
     });
   }
-}, D = {
+}, $ = {
   selector: "data-if",
   construct: function(t, e) {
     let n = new Comment("data-if");
@@ -105,7 +105,7 @@ const y = /* @__PURE__ */ new WeakMap(), w = (t, e) => y.has(t) ? y.get(t).push(
       !e(t.element) && !t.element.isConnected && (t.replaceWith = n), n.isConnected && e(t.element) && (n.replaceWith(t.element), typeof t.element.init == "function" && t.element.init(t.element)), t.element.isConnected && !e(t.element) && (typeof t.element.destroy == "function" && t.element.destroy(t.element), t.element.replaceWith(n));
     });
   }
-}, P = {
+}, D = {
   selector: "data-show",
   construct: function({ element: t }, e) {
     return a(() => t.style.display = e(t) ? null : "none");
@@ -118,11 +118,11 @@ const y = /* @__PURE__ */ new WeakMap(), w = (t, e) => y.has(t) ? y.get(t).push(
     });
   }
 }, g = [
-  $,
+  R,
   _,
   v,
-  P,
-  D
+  D,
+  $
 ], B = Object.fromEntries(
   g.map((t) => [t.selector, t])
 ), T = (t) => {
@@ -174,11 +174,8 @@ const y = /* @__PURE__ */ new WeakMap(), w = (t, e) => y.has(t) ? y.get(t).push(
   }
 );
 class H extends Array {
-  constructor(e) {
-    super(), this.iterable = e;
-  }
   mount(e) {
-    this.iterable.forEach((n) => e(n));
+    return this.forEach((n) => e(n)), this;
   }
 }
 const C = (t = document) => new Proxy({}, {
@@ -191,7 +188,7 @@ const C = (t = document) => new Proxy({}, {
       }, i.state = function(d) {
         l({ element: i, ctx: d }), x(i, o);
       };
-    }), f.length === 1 ? f[0] : new H(f);
+    }), f.length === 1 ? f[0] : new H(...f);
   }
 }), M = C();
 export {
