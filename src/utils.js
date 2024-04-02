@@ -43,23 +43,24 @@ export const switchProps = (props, children) => {
  * @param {HTMLElement} root
  * @returns {Array<HTMLElement>}
  */
-export const getRefs = (root) => {
-    const refs = []
+export const getRefs = (root, selector) => {
+    const refs = [];
     /** @type {TreeWalker} */
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, function (node) {
-        if (
-            node.getAttributeNames().includes("ref") &&
-            !node.getAttribute("ref").toUpperCase().includes("CONTROLLER")
-        ) {
-            return NodeFilter.ACCEPT_NODE;
-        } else {
-            return NodeFilter.REJECT_NODE;
-        }
-    });
+    const walker = document.createTreeWalker(
+        root,
+        NodeFilter.SHOW_ELEMENT,
+        function (node) {
+            if (node.getAttribute("ref") == selector)
+                return NodeFilter.FILTER_ACCEPT;
+            if (node.getAttribute("ref")?.toUpperCase().includes("CONTROLLER"))
+                return NodeFilter.FILTER_REJECT;
 
-    do {
-        refs.push(walker.currentNode)
-    } while (walker.nextNode())
+            return NodeFilter.FILTER_SKIP;
+        }
+    );
+
+    let currentNode;
+    while ((currentNode = walker.nextNode())) refs.push(currentNode);
 
     return refs;
 };

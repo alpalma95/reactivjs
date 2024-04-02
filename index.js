@@ -1,3 +1,4 @@
+
 import { h, stream, $ } from "./src";
 
 const $list = stream([
@@ -56,7 +57,6 @@ const SortButton = () => {
         $list.val = [
             ...$list.val.sort((person1, person2) => person2.id - person1.id),
         ];
-        console.log($list.val);
     }
 
     return h.button({ onclick: sortList }, ["Reverse sort"]);
@@ -68,7 +68,7 @@ const deletePerson = (id, e) => {
 };
 
 const personView = (person) =>
-    h.li({ "data-key": person.id, 'init': () => console.log('person added id', person.id), 'destroy': () => console.log("person removed id", person.id) }, [
+    h.li({ "data-key": person.id, 'destroy': () => console.log("person removed id", person.id) }, [
         `${person.name} with id ${person.id} `,
         h.button({ onclick: (e) => deletePerson(person.id, e) }, [
             `Delete person ${person.id}`,
@@ -155,55 +155,13 @@ const App = () =>
     ]);
 
 
-const $Counter = function({ $, dataset }) {
+$.count({ 'data-text': () => "hi" }) // this won't affect the count refs inside counter controller
+$.CounterController({'hi': 'there'}).mount(function({ $, dataset }) {
     let count = stream(+dataset.initialCount)
 
     $.count({'data-text': () => count.val, 'data-if': () => count.val > 0}),
     $.incButton({'onclick': () => count.val++})
 
-}
-$.CounterController({'hi': 'there'}).mount($Counter)
+})
+
 $.app([App()])
-// Trying out data-for in SSR
-let peopleSSR = stream([])
-$.addPersonSSR().mount(function (el) {
-    let currentId = stream(() =>
-        peopleSSR.val.length < 1
-            ? 1
-            : Math.max(...peopleSSR.val.map((person) => person.id)) + 1
-    );
-
-    const add = () => {
-        peopleSSR.val = [
-            ...peopleSSR.val,
-            {
-                id: currentId.val,
-                name: `Person ${currentId.val}`,
-            },
-        ];
-    };
-    el.props({ onclick: add })
-})
-$.sortSSR().mount( function (el) {
-    function sortList() {
-        peopleSSR.val = [
-            ...peopleSSR.val.sort((person1, person2) => person2.id - person1.id),
-        ];
-    }
-
-    el.props({ onclick: sortList })
-})
-
-$.peopleSSR().mount( function(element) {
-    
-    let listItem = (person) => function(item) {
-        item.props({'data-key': person.id})
-        item.$.personName({'data-text': () => person.name})
-        item.$.personId({ 'data-text': () => person.id })
-        item.$.deleteBtn({ onclick: () => peopleSSR.val = [...peopleSSR.val.filter((p) => p.id !== person.id)] })
-    }
-    // important to set track by first if we don't set it on the html
-    element.props({'data-track-by': 'id', 'data-for': [peopleSSR, listItem]})
-
-})
-
