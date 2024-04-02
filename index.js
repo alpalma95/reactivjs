@@ -1,5 +1,5 @@
 
-import { h, stream, $ } from "./src";
+import { h, stream, $, hook } from "./src";
 
 const $list = stream([
     {
@@ -165,3 +165,12 @@ $.CounterController({'hi': 'there'}).mount(function({ $, dataset }) {
 })
 
 $.app([App()])
+
+$.FormController().mount( ({ $ }) => {
+    const test = stream('')
+
+    $.input({ 'data-model': test })
+    $.target({ 'data-text': ()=> test.val})
+    $.clear({ onclick: () => test.val = '' })
+
+})

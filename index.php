@@ -28,9 +28,8 @@
   </head>
   <body>
     <h1> Generated server side </h1>
-    <div ref="app">
-        <!-- "Props" are just dataset properties -->
-        <div ref="count"></div>
+     <!-- "Props" are just dataset properties -->
+     <div ref="count"></div>
         <div ref="CounterController" data-initial-count="1">
             <span ref="count">0</span>
             <button ref="incButton">Inc count</button>
@@ -39,6 +38,12 @@
             <span ref="count">0</span>
             <button ref="incButton">Inc count</button>
         </div>
-    </div>
+  
+        <div ref="FormController">
+          <input type="text" ref="input">
+          <p ref="target"></p>
+          <button ref="clear">clear input</button>
+        </div>
+    <div ref="app"> <!---Hydrated client side --> </div>
   </body>
 </html>
