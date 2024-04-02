@@ -162,7 +162,7 @@ const $Counter = function({ $, dataset }) {
     $.incButton({'onclick': () => count.val++})
 
 }
-
+$.CounterController({'hi': 'there'}).mount($Counter)
 $.app([App()])
 // Trying out data-for in SSR
 let peopleSSR = stream([])
@@ -193,7 +193,7 @@ $.sortSSR().mount( function (el) {
 
     el.props({ onclick: sortList })
 })
-$.Counter({'hi': 'there'}).mount($Counter)
+
 $.peopleSSR().mount( function(element) {
     
     let listItem = (person) => function(item) {

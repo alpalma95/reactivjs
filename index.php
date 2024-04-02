@@ -30,11 +30,11 @@
     <h1> Generated server side </h1>
     <div ref="app">
         <!-- "Props" are just dataset properties -->
-        <div ref="Counter" data-initial-count="1">
+        <div ref="CounterController" data-initial-count="1">
             <span ref="count">0</span>
             <button ref="incButton">Inc count</button>
         </div>
-        <div ref="Counter" data-initial-count="2">
+        <div ref="CounterController" data-initial-count="2">
             <span ref="count">0</span>
             <button ref="incButton">Inc count</button>
         </div>

@@ -4,25 +4,24 @@ import { hook } from "./streams.js";
 /** @type {WeakMap<HTMLElement, Array>} */
 const DOMEffectsMap = new WeakMap();
 
-export const registerEffect = (element, effect) => 
-    DOMEffectsMap.has(element) ?
-    DOMEffectsMap.get(element).push(effect)
-    : DOMEffectsMap.set(element, [effect])
-
+export const registerEffect = (element, effect) =>
+    DOMEffectsMap.has(element)
+        ? DOMEffectsMap.get(element).push(effect)
+        : DOMEffectsMap.set(element, [effect]);
 
 /**
  * Remove the given element as well as the effects associated with it found in the weakmap
  * @param {HTMLElement} Element Element to remove from the DOM
  */
 export const safeRemove = (element) => {
-    if (typeof element.destroy === 'function') element.destroy(element)
+    if (typeof element.destroy === "function") element.destroy(element);
 
     DOMEffectsMap.get(element)?.forEach((effect) => {
         Array.isArray(effect)
             ? effect.forEach((nestedEffect) => nestedEffect.unhook())
             : effect.unhook();
     });
-    DOMEffectsMap.delete(element)
+    DOMEffectsMap.delete(element);
     element?.remove();
 };
 
@@ -37,4 +36,30 @@ export const switchProps = (props, children) => {
         props = {};
     }
     return [props, children];
+};
+
+/**
+ *
+ * @param {HTMLElement} root
+ * @returns {Array<HTMLElement>}
+ */
+export const getRefs = (root) => {
+    const refs = []
+    /** @type {TreeWalker} */
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, function (node) {
+        if (
+            node.getAttributeNames().includes("ref") &&
+            !node.getAttribute("ref").toUpperCase().includes("CONTROLLER")
+        ) {
+            return NodeFilter.ACCEPT_NODE;
+        } else {
+            return NodeFilter.REJECT_NODE;
+        }
+    });
+
+    do {
+        refs.push(walker.currentNode)
+    } while (walker.nextNode())
+
+    return refs;
 };
