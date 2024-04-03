@@ -29,7 +29,7 @@
   <body>
         <h1> Generated server side </h1>
         <div ref="count"></div>
-    <!-- "Props" are just dataset properties -->
+        <!-- "Props" are just dataset properties -->
         <div ref="CounterController" data-initial-count="1">
             <span :data-text="count" :test="count">0</span>
             <button :onclick="inc" data-increment-by="1">Inc count</button>
