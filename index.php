@@ -27,16 +27,16 @@
     <script type="module" src="http://localhost:5173/index.js"></script>
   </head>
   <body>
-    <h1> Generated server side </h1>
-     <!-- "Props" are just dataset properties -->
-     <div ref="count"></div>
+        <h1> Generated server side </h1>
+        <div ref="count"></div>
+    <!-- "Props" are just dataset properties -->
         <div ref="CounterController" data-initial-count="1">
-            <span ref="count">0</span>
-            <button ref="incButton">Inc count</button>
+            <span ref data-text="count" :test="count">0</span>
+            <button ref on:click="inc" data-increment-by="1">Inc count</button>
         </div>
         <div ref="CounterController" data-initial-count="2">
-            <span ref="count">0</span>
-            <button ref="incButton">Inc count</button>
+            <span ref data-text="count" :test="count">0</span>
+            <button ref on:click="inc" data-increment-by="2">Inc count</button>
         </div>
   
         <div ref="FormController">

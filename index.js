@@ -154,17 +154,23 @@ const App = () =>
         Counter(),
     ]);
 
+// $.app([App()])
 
-$.count({ 'data-text': () => "hi" }) // this won't affect the count refs inside counter controller
-$.CounterController({'hi': 'there'}).mount(function({ $, dataset }) {
+// $.count({ 'data-text': () => "hi" }) // this won't affect the count refs inside counter controller
+$.CounterController().mount(function({ $, dataset }) {
     let count = stream(+dataset.initialCount)
+    // $.count({'data-text': () => count.val, 'data-if': () => count.val > 0}),
+    // $.incButton({'onclick': () => count.val++})
 
-    $.count({'data-text': () => count.val, 'data-if': () => count.val > 0}),
-    $.incButton({'onclick': () => count.val++})
+    $.createScope({ 
+        count: () => count.val,
+        inc: ({ currentTarget }) => count.val += +currentTarget.dataset.incrementBy
+    })
+  
 
 })
 
-$.app([App()])
+
 
 $.FormController().mount( ({ $ }) => {
     const test = stream('')

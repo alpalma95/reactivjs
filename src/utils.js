@@ -50,7 +50,7 @@ export const getRefs = (root, selector) => {
         root,
         NodeFilter.SHOW_ELEMENT,
         function (node) {
-            if (node.getAttribute("ref") == selector)
+            if (node.getAttribute("ref") == selector || node.getAttributeNames().includes('ref') && selector === 'createScope')
                 return NodeFilter.FILTER_ACCEPT;
             if (node.getAttribute("ref")?.toUpperCase().includes("CONTROLLER"))
                 return NodeFilter.FILTER_REJECT;
