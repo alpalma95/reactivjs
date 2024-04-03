@@ -1,5 +1,5 @@
 let d = null, p = /* @__PURE__ */ new WeakMap();
-class S {
+class g {
   constructor(e) {
     this.cb = e, this._set = /* @__PURE__ */ new Set();
   }
@@ -8,68 +8,47 @@ class S {
   }
 }
 let u = (t) => {
-  d = new S(t), d.cb();
+  d = new g(t), d.cb();
   let e = d;
   return d = null, e;
-}, v = (t, e) => {
+}, L = (t, e) => {
   if (d === null)
     return;
   let n;
   p.has(t) ? n = p.get(t).get(e) : p.set(t, /* @__PURE__ */ new Map([[e, n = /* @__PURE__ */ new Set()]])), d._set.add(n), n.add(d);
-}, R = (t, e, n) => {
+}, S = (t, e, n) => {
   if (!p.get(t))
     return;
   p.get(t).get(e).forEach(({ cb: s }) => s(n));
-}, W = (t) => {
+}, v = (t) => {
   if (Array.isArray(t) || typeof t != "function" && typeof t != "object")
     return { val: t };
   if (typeof t == "function") {
-    let e = w(1);
+    let e = m(1);
     return u(() => e.val = t()), e;
   } else
     return Object.fromEntries(
       Object.entries(t).map(([e, n]) => [
         e,
-        typeof n == "object" || typeof n == "function" ? w(n) : n
+        typeof n == "object" || typeof n == "function" ? m(n) : n
       ])
     );
-}, w = (t) => {
-  let e = W(t);
+}, m = (t) => {
+  let e = v(t);
   return new Proxy(e, {
     get(n, r, s) {
-      return v(n, r), Reflect.get(n, r, s);
+      return L(n, r), Reflect.get(n, r, s);
     },
     set(n, r, s, c) {
       if (n[r] !== s) {
         let o = n[r];
-        Reflect.set(n, r, s, c), R(n, r, o);
+        Reflect.set(n, r, s, c), S(n, r, o);
       }
       return !0;
     }
   });
 };
-const l = /* @__PURE__ */ new WeakMap(), A = (t, e) => l.has(t) ? l.get(t).push(e) : l.set(t, [e]), T = (t) => {
-  var e;
-  typeof t.destroy == "function" && t.destroy(t), (e = l.get(t)) == null || e.forEach((n) => {
-    Array.isArray(n) ? n.forEach((r) => r.unhook()) : n.unhook();
-  }), l.delete(t), t == null || t.remove();
-}, F = (t, e, n) => {
-  let r = u(() => t.setAttribute(e, n(t)));
-  A(t, r);
-}, x = (t, e) => (Array.isArray(t) && (e = t, t = {}), [t, e]), P = (t, e) => {
-  const n = [], r = document.createTreeWalker(
-    t,
-    NodeFilter.SHOW_ELEMENT,
-    function(c) {
-      var o;
-      return c.getAttribute("ref") == e || c.getAttributeNames().includes("ref") && e === "createScope" ? NodeFilter.FILTER_ACCEPT : (o = c.getAttribute("ref")) != null && o.toUpperCase().includes("CONTROLLER") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
-    }
-  );
-  let s;
-  for (; s = r.nextNode(); )
-    n.push(s);
-  return n;
-}, _ = {
+const R = {
   selector: "data-class",
   construct: function({ element: t }, e) {
     const n = [];
@@ -81,12 +60,12 @@ const l = /* @__PURE__ */ new WeakMap(), A = (t, e) => l.has(t) ? l.get(t).push(
     }
     return n;
   }
-}, j = (t, e, n) => {
+}, T = (t, e, n) => {
   const r = e.children, { trackBy: s } = e.dataset;
   t.length < r.length && [...r].filter(
     (o) => !t.some((f) => o.dataset.key == f[s])
   ).forEach((o) => {
-    T(e.querySelector(`[data-key="${o.dataset.key}"]`));
+    q(e.querySelector(`[data-key="${o.dataset.key}"]`));
   }), t.forEach((c, o) => {
     r[o] || e.appendChild(n(c));
     const f = c[s] == r[o].dataset.key, h = t.length === r.length, i = `[data-key="${c[s]}"]`;
@@ -99,15 +78,15 @@ const l = /* @__PURE__ */ new WeakMap(), A = (t, e) => l.has(t) ? l.get(t).push(
       e.insertBefore(a, r[o]);
     }
   });
-}, N = {
+}, W = {
   selector: "data-for",
   construct: function({ element: t }, e) {
     const [n, r] = e;
     return u(() => {
-      j(n.val, t, r);
+      T(n.val, t, r);
     });
   }
-}, q = {
+}, F = {
   selector: "data-if",
   construct: function(t, e) {
     let n = new Comment("data-if");
@@ -115,7 +94,7 @@ const l = /* @__PURE__ */ new WeakMap(), A = (t, e) => l.has(t) ? l.get(t).push(
       !e(t.element) && !t.element.isConnected && (t.replaceWith = n), n.isConnected && e(t.element) && (n.replaceWith(t.element), typeof t.element.init == "function" && t.element.init(t.element)), t.element.isConnected && !e(t.element) && (typeof t.element.destroy == "function" && t.element.destroy(t.element), t.element.replaceWith(n));
     });
   }
-}, D = {
+}, _ = {
   selector: "data-model",
   construct: function({ element: t }, e) {
     return t.addEventListener("input", () => {
@@ -124,32 +103,54 @@ const l = /* @__PURE__ */ new WeakMap(), A = (t, e) => l.has(t) ? l.get(t).push(
       t.value = e.val;
     });
   }
-}, I = {
+}, P = {
   selector: "data-show",
   construct: function({ element: t }, e) {
     return u(() => t.style.display = e(t) ? null : "none");
   }
-}, $ = {
+}, j = {
   selector: "data-text",
   construct: function({ element: t }, e) {
     return u(() => {
-      t.textContent === e(t) || t instanceof Comment || (t.textContent = e(t));
+      let n = typeof e == "function" ? e(t) : (e == null ? void 0 : e.val) ?? e;
+      t.textContent === n || t instanceof Comment || (t.textContent = n);
     });
   }
-}, m = [
-  N,
-  $,
-  _,
-  I,
-  q,
-  D
-], C = Object.fromEntries(
-  m.map((t) => [t.selector, t])
-), O = (t) => {
-  m.push(t);
-}, E = (t) => {
+}, x = [
+  W,
+  j,
+  R,
+  P,
+  F,
+  _
+], N = Object.fromEntries(
+  x.map((t) => [t.selector, t])
+), M = (t) => {
+  x.push(t);
+}, l = /* @__PURE__ */ new WeakMap(), w = (t, e) => l.has(t) ? l.get(t).push(e) : l.set(t, [e]), q = (t) => {
+  var e;
+  typeof t.destroy == "function" && t.destroy(t), (e = l.get(t)) == null || e.forEach((n) => {
+    Array.isArray(n) ? n.forEach((r) => r.unhook()) : n.unhook();
+  }), l.delete(t), t == null || t.remove();
+}, D = (t, e, n) => {
+  let r = u(() => t.setAttribute(e, n(t)));
+  w(t, r);
+}, A = (t, e) => (Array.isArray(t) && (e = t, t = {}), [t, e]), I = (t, e) => {
+  const n = [], r = document.createTreeWalker(
+    t,
+    NodeFilter.SHOW_ELEMENT,
+    function(c) {
+      var o;
+      return c.getAttribute("ref") == e || c.getAttributeNames().some((f) => f.includes(":")) && e === "createScope" ? NodeFilter.FILTER_ACCEPT : (o = c.getAttribute("ref")) != null && o.toUpperCase().includes("CONTROLLER") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
+    }
+  );
+  let s;
+  for (; s = r.nextNode(); )
+    n.push(s);
+  return n;
+}, y = (t) => {
   for (const e in t.ctx) {
-    let n = C[e];
+    let n = N[e];
     const r = e.startsWith("on") && typeof t.ctx[e] == "function";
     if (e === "init") {
       t.ctx[e](t.element), t.element.init = t.ctx[e];
@@ -161,11 +162,11 @@ const l = /* @__PURE__ */ new WeakMap(), A = (t, e) => l.has(t) ? l.get(t).push(
     }
     if (n) {
       let s = n.construct(t, t.ctx[e]);
-      A(t.element, s);
+      w(t.element, s);
       continue;
     }
     if (!n && typeof t.ctx[e] == "function" && !r) {
-      F(t.element, e, t.ctx[e]);
+      D(t.element, e, t.ctx[e]);
       continue;
     }
     if (r) {
@@ -174,22 +175,22 @@ const l = /* @__PURE__ */ new WeakMap(), A = (t, e) => l.has(t) ? l.get(t).push(
     }
     t.element.setAttribute(e, t.ctx[e]);
   }
-}, g = (t, e) => {
+}, E = (t, e) => {
   e.length && e.forEach((n) => {
     let r;
     n instanceof HTMLElement || n instanceof Comment || n instanceof DocumentFragment ? r = n : r = new Text(n), t.appendChild(r);
   });
-}, B = (t) => function(e, n = []) {
-  let [r, s] = x(e, n), c = {
+}, $ = (t) => function(e, n = []) {
+  let [r, s] = A(e, n), c = {
     element: t === "fragment" ? new DocumentFragment() : document.createElement(t),
     ctx: r
   };
-  return E(c), g(c.element, s), c.replaceWith ?? c.element;
+  return y(c), E(c.element, s), c.replaceWith ?? c.element;
 }, J = new Proxy(
   {},
   {
     get: function(t, e) {
-      return e in t || Reflect.set(t, e, B(e)), t[e];
+      return e in t || Reflect.set(t, e, $(e)), t[e];
     }
   }
 );
@@ -198,42 +199,34 @@ class H extends Array {
     return this.forEach((n) => e(n)), this;
   }
 }
-const y = (t, e, n) => n[t.getAttribute(e)], M = (t, e) => {
-  const n = t.getAttributeNames();
-  let r = {};
-  return n.forEach((s) => {
-    s.startsWith("on:") && (r[s.replaceAll(":", "")] = y(
-      t,
-      s,
-      e
-    )) && t.removeAttribute(s), s.startsWith(":") && (r[s.replaceAll(":", "")] = y(
-      t,
-      s,
-      e
-    )) && t.removeAttribute(s), C.hasOwnProperty(s) && (r[s] = y(t, s, e)) && t.removeAttribute(s);
-  }), r;
-}, L = (t = document) => new Proxy(
+const B = (t, e) => {
+  var r;
+  let n = {};
+  return (r = t.getAttributeNames()) == null || r.forEach((s) => {
+    s.startsWith(":") && (n[s.replaceAll(":", "")] = e[t.getAttribute(s)]) && t.removeAttribute(s);
+  }), n;
+}, C = (t = document) => new Proxy(
   {},
   {
     get: (e, n) => function(r, s = []) {
-      let [c, o] = x(r, s);
-      const f = [...P(t, n)];
+      let [c, o] = A(r, s);
+      const f = [...I(t, n)];
       let h = n === "createScope" ? c : null;
       return f.forEach((i) => {
-        h && (c = M(i, h)), E({ element: i, ctx: c }), g(i, o), i.$ = L(i), i.mount = function(a) {
+        h && (c = B(i, h)), y({ element: i, ctx: c }), E(i, o), i.$ = C(i), i.mount = function(a) {
           a(i);
         }, i.props = function(a) {
-          E({ element: i, ctx: a }), g(i, o);
+          y({ element: i, ctx: a }), E(i, o);
         };
       }), f.length === 1 ? f[0] : new H(...f);
     }
   }
-), K = L();
+), K = C();
 export {
   K as $,
   J as h,
   u as hook,
-  O as registerDirective,
-  T as safeRemove,
-  w as stream
+  M as registerDirective,
+  q as safeRemove,
+  m as stream
 };
