@@ -8,8 +8,9 @@ export const textDirective = {
        * In case the element is being conditionally rendered or the value hasn't changed,
        * we will prevent its content from being updated
        */
-      if (element.textContent === binding(element) || element instanceof Comment) return;
-      element.textContent = binding(element);
+      let value = typeof binding === 'function' ? binding(element) : binding?.val ?? binding
+      if (element.textContent === value || element instanceof Comment) return;
+      element.textContent = value;
     });
   },
 };

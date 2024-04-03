@@ -31,18 +31,18 @@
         <div ref="count"></div>
     <!-- "Props" are just dataset properties -->
         <div ref="CounterController" data-initial-count="1">
-            <span ref data-text="count" :test="count">0</span>
-            <button ref on:click="inc" data-increment-by="1">Inc count</button>
+            <span :data-text="count" :test="count">0</span>
+            <button :onclick="inc" data-increment-by="1">Inc count</button>
         </div>
         <div ref="CounterController" data-initial-count="2">
-            <span ref data-text="count" :test="count">0</span>
-            <button ref on:click="inc" data-increment-by="2">Inc count</button>
+            <span :data-text="count" :test="count">0</span>
+            <button :onclick="inc" data-increment-by="2">Inc count</button>
         </div>
   
         <div ref="FormController">
-          <input type="text" ref="input">
-          <p ref="target"></p>
-          <button ref="clear">clear input</button>
+          <input type="text" :data-model="text">
+          <p :data-text="text"></p>
+          <button :onclick="clear">clear input</button>
         </div>
     <div ref="app"> <!---Hydrated client side --> </div>
   </body>

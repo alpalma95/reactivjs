@@ -9,3 +9,5 @@ easy to work around and not really expensive, so holding it for now
 - data-model only works for input type text, it should work for all inputs
 
 - provide a way of initializing the library so it can accept custom directives
+
+- data-text directive now works also by only passing a stream variable without need for a callback. Do the same for the other directives

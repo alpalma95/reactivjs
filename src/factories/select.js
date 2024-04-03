@@ -1,6 +1,5 @@
 import { appendChildren, hydrate } from "./shared.js";
 import { getRefs, switchProps } from "../utils.js";
-import { directives } from "../directives/registerDirectives.js";
 
 class Mountable extends Array {
     mount(component) {
@@ -9,34 +8,19 @@ class Mountable extends Array {
     }
 }
 
-const getBinding = (element, attributeName, parentCtx) =>
-    parentCtx[element.getAttribute(attributeName)];
-
 /**
- *
+ * Create a context for hydrating a specific element
+ * based on the context of the parent element in which
+ * we're createing the context / scope
  * @param {HTMLElement} element
  * @param { Object } parentCtx
  */
 const getCtx = (element, parentCtx) => {
-    const allAttributes = element.getAttributeNames();
     let ctx = {};
-
-    allAttributes.forEach((attribute) => {
-        if (attribute.startsWith("on:"))
-            (ctx[attribute.replaceAll(":", "")] = getBinding(
-                element,
-                attribute,
-                parentCtx
-            )) && element.removeAttribute(attribute);
-
+    element.getAttributeNames()?.forEach((attribute) => {
         if (attribute.startsWith(":"))
-            (ctx[attribute.replaceAll(":", "")] = getBinding(
-                element,
-                attribute,
-                parentCtx
-            )) && element.removeAttribute(attribute);
-        if (directives.hasOwnProperty(attribute))
-            (ctx[attribute] = getBinding(element, attribute, parentCtx)) &&
+            (ctx[attribute.replaceAll(":", "")] =
+                parentCtx[element.getAttribute(attribute)]) &&
                 element.removeAttribute(attribute);
     });
     return ctx;
@@ -56,7 +40,6 @@ const createSelectProxy = (root = document) =>
                         if (parentScope) ctx = getCtx(element, parentScope);
 
                         hydrate({ element, ctx });
-
                         appendChildren(element, children);
                         element.$ = createSelectProxy(element);
                         element.mount = function (component) {

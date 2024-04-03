@@ -1,3 +1,4 @@
+import { directives } from "./directives/registerDirectives.js";
 import { hook } from "./streams.js";
 
 // TODO: Global WeakMap with all needed effects. We shall look for a better place
@@ -50,7 +51,11 @@ export const getRefs = (root, selector) => {
         root,
         NodeFilter.SHOW_ELEMENT,
         function (node) {
-            if (node.getAttribute("ref") == selector || node.getAttributeNames().includes('ref') && selector === 'createScope')
+            if (
+                node.getAttribute("ref") == selector ||
+                (node.getAttributeNames().some((name) => name.includes(":")) &&
+                    selector === "createScope")
+            )
                 return NodeFilter.FILTER_ACCEPT;
             if (node.getAttribute("ref")?.toUpperCase().includes("CONTROLLER"))
                 return NodeFilter.FILTER_REJECT;
