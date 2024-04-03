@@ -42,6 +42,7 @@
         <div ref="FormController">
           <input type="text" :data-model="text">
           <p :data-text="text"></p>
+          <p :data-if="text">Input is not empty!</p>
           <button :onclick="clear">clear input</button>
         </div>
     <div ref="app"> <!---Hydrated client side --> </div>

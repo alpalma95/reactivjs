@@ -17,7 +17,6 @@ const html = (tagName) => {
   };
 };
 
-// Elements factory
 export const h = new Proxy({}, {
     get: function (target, value) {
       if (!(value in target)) Reflect.set(target, value, html(value))

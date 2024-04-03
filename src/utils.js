@@ -1,36 +1,10 @@
-import { directives } from "./directives/registerDirectives.js";
-import { hook } from "./streams.js";
-
-// TODO: Global WeakMap with all needed effects. We shall look for a better place
-/** @type {WeakMap<HTMLElement, Array>} */
-const DOMEffectsMap = new WeakMap();
-
-export const registerEffect = (element, effect) =>
-    DOMEffectsMap.has(element)
-        ? DOMEffectsMap.get(element).push(effect)
-        : DOMEffectsMap.set(element, [effect]);
-
 /**
- * Remove the given element as well as the effects associated with it found in the weakmap
- * @param {HTMLElement} Element Element to remove from the DOM
+ * In case we don't provide a props object, we make sure that we're operating on a valid object.
+ * Otherwise, we'd always need to pass an empty object if we only want to append children.
+ * @param {any} props Props to be used as context for the hydration phase
+ * @param {Array<HTMLElement>} children Children to be appended to the element we're hydrating
+ * @returns 
  */
-export const safeRemove = (element) => {
-    if (typeof element.destroy === "function") element.destroy(element);
-
-    DOMEffectsMap.get(element)?.forEach((effect) => {
-        Array.isArray(effect)
-            ? effect.forEach((nestedEffect) => nestedEffect.unhook())
-            : effect.unhook();
-    });
-    DOMEffectsMap.delete(element);
-    element?.remove();
-};
-
-export const bindAttribute = (element, attrName, cb) => {
-    let effect = hook(() => element.setAttribute(attrName, cb(element)));
-    registerEffect(element, effect);
-};
-
 export const switchProps = (props, children) => {
     if (Array.isArray(props)) {
         children = props;
@@ -40,7 +14,9 @@ export const switchProps = (props, children) => {
 };
 
 /**
- *
+ * Will return all elements that are a ref or inside a ref and has special attributes.
+ * It will completely reject refs containing the word "Controller", protecting
+ * its content from accidentally being selected and hydrated from outside.
  * @param {HTMLElement} root
  * @returns {Array<HTMLElement>}
  */
@@ -69,3 +45,6 @@ export const getRefs = (root, selector) => {
 
     return refs;
 };
+
+export const isTruthy = (binding, element) =>
+    typeof binding === "function" ? binding(element) : binding.val ?? binding;

@@ -154,14 +154,14 @@ const App = () =>
         Counter(),
     ]);
 
-// $.app([App()])
+$.app([App()])
 
-// $.count({ 'data-text': () => "hi" }) // this won't affect the count refs inside counter controller
+$.count({ 'data-text': () => "hi" }) // this won't affect the count refs inside counter controller
 $.CounterController().mount(function({ $, dataset }) {
     let count = stream(+dataset.initialCount)
 
     $.createScope({ 
-        count: () => count.val,
+        count,
         inc: ({ currentTarget }) => count.val += +currentTarget.dataset.incrementBy
     })
 })

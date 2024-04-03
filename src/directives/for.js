@@ -1,8 +1,7 @@
 import { hook } from "../streams.js";
-import { safeRemove } from "../utils.js";
+import { safeRemove } from "../factories/effectsManager.js";
 
 /**
- *
  * @param {Array} array
  * @param {HTMLElement} DOMNode
  * @param {(arg?: any) => any} template

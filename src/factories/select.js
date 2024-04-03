@@ -58,6 +58,3 @@ const createSelectProxy = (root = document) =>
     );
 
 export const $ = createSelectProxy();
-
-// $.ref(ctx) ---> hydrates as originally intended
-// $.ref().mount(Component())
