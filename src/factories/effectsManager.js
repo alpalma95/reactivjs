@@ -1,4 +1,5 @@
 import { hook } from "../streams.js";
+import { doBinding } from "../utils.js";
 
 /** @type {WeakMap<HTMLElement, Array>} */
 const DOMEffectsMap = new WeakMap();
@@ -30,7 +31,9 @@ export const safeRemove = (element) => {
     element?.remove();
 };
 
-export const bindAttribute = (element, attrName, cb) => {
-    let effect = hook(() => element.setAttribute(attrName, cb(element)));
+export const bindAttribute = (element, attrName, binding) => {
+    let effect = hook(() =>
+        element.setAttribute(attrName, doBinding(binding, element))
+    );
     registerEffect(element, effect);
 };

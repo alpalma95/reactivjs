@@ -46,5 +46,5 @@ export const getRefs = (root, selector) => {
     return refs;
 };
 
-export const isTruthy = (binding, element) =>
+export const doBinding = (binding, element) =>
     typeof binding === "function" ? binding(element) : binding.val ?? binding;

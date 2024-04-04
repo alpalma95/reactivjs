@@ -26,7 +26,7 @@ export const hydrate = (block) => {
             continue;
         }
 
-        if (typeof block.ctx[attr] === "function") {
+        if (typeof block.ctx[attr] === "function" || typeof block.ctx[attr] === 'object') {
             bindAttribute(block.element, attr, block.ctx[attr]);
             continue;
         }

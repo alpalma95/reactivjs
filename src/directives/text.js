@@ -1,4 +1,5 @@
 import { hook } from "../streams.js";
+import { doBinding } from '../utils.js'
 
 export const textDirective = {
   selector: "data-text",
@@ -8,9 +9,8 @@ export const textDirective = {
        * In case the element is being conditionally rendered or the value hasn't changed,
        * we will prevent its content from being updated
        */
-      let value = typeof binding === 'function' ? binding(element) : binding?.val ?? binding
-      if (element.textContent === value || element instanceof Comment) return;
-      element.textContent = value;
+      if (element.textContent === doBinding(binding, element) || element instanceof Comment) return;
+      element.textContent = doBinding(binding, element);
     });
   },
 };
