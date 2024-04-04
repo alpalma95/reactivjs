@@ -5,6 +5,7 @@
     - Cleanup, several repetitions
     - Check for edge cases
     - Possibly abstract into own file / directive
+    - Add third argument to process the json data, like a map maybe
 
 - data-for: when sorting, the first element gets replaced first hence it needs to be created at the end of the diffing.
 easy to work around and not really expensive, so holding it for now
@@ -12,3 +13,5 @@ easy to work around and not really expensive, so holding it for now
 - data-model only works for input type text, it should work for all inputs
 
 - provide a way of initializing the library so it can accept custom directives
+
+- would be nice to interpolate data-text variables
