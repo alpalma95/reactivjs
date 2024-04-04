@@ -160,7 +160,6 @@ $.app([App()])
 $.count({ 'data-text': () => "hi" }) // this won't affect the count refs inside counter controller
 $.CounterController().mount(function({ $, dataset }) {
     let count = stream(+dataset.initialCount)
-    $.props({ 'counting': 'banana'})
     $.createScope({ 
         count,
         inc: ({ currentTarget }) => count.val += +currentTarget.dataset.incrementBy
@@ -178,9 +177,9 @@ $.FormController().mount( ({ $ }) => {
 
 
 let ssr_people = stream([])
-const PersonController = (person) => (personElement) => {
-    const { $ } = personElement
-    $.props({ 'data-key': () => person.id })
+const PersonItemController = (person) => ({ $, props }) => {
+    props({ 'data-key': person.id })
+    
     $.createScope({
         name: () => person.name,
         id: () => person.id,
@@ -188,7 +187,7 @@ const PersonController = (person) => (personElement) => {
     })
 }
 
-$.SSR({ 'data-for': [ssr_people, PersonController] })
+$.SSR({ 'data-for': [ssr_people, PersonItemController] })
 
 setTimeout(() => {
     ssr_people.val = [...ssr_people.val, {id: 4, name: "Test"}]
