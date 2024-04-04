@@ -3,6 +3,8 @@
 
 - data-for: refactor logic for SSR list.
     - Cleanup, several repetitions
+    - Check for edge cases
+    - Possibly abstract into own file / directive
 
 - data-for: when sorting, the first element gets replaced first hence it needs to be created at the end of the diffing.
 easy to work around and not really expensive, so holding it for now
