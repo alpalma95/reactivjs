@@ -17,6 +17,7 @@
   foreach ($people_ssr as $person) {
     $people[] = (object)$person;
   }
+  
 ?> 
 
 <!DOCTYPE html>
@@ -46,9 +47,17 @@
           <?php foreach($people as $person):?>
             <li ref="person" data-key="<?= $person->id ?>">
               <span :data-text="name"><?= $person->name ?></span>
-              <button :onclick="deletePerson"> Delete person <span :data-text="id"><?= $person->id ?></span></button>
+              <button :onclick="deletePerson" :data-deletes="id" data-deletes="<?= $person->id ?>"> Delete person <span :data-text="id"><?= $person->id ?></span></button>
             </li>
           <?php endforeach; ?>
+          <?php if(empty($people)):?>
+              <template>
+                <li ref="person" data-key="<?= $person->id ?>">
+                  <span :data-text="name"><?= $person->name ?></span>
+                  <button :onclick="deletePerson"> Delete person <span :data-text="id"><?= $person->id ?></span></button>
+                </li>
+              </template>
+          <?php endif; ?>
         </ul>
 
         <div ref="FormController">
