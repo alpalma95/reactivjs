@@ -13,7 +13,10 @@
       "name" => "Test 3"
     ]
   ];
-  // $people_ssr = []
+  $people = [];
+  foreach ($people_ssr as $person) {
+    $people[] = (object)$person;
+  }
 ?> 
 
 <!DOCTYPE html>
@@ -38,7 +41,16 @@
             <span :data-text="count" :test="count">0</span>
             <button :onclick="inc" data-increment-by="2">Inc count</button>
         </div>
-  
+
+        <ul ref="SSR" data-populate='<?= json_encode($people)?>'>
+          <?php foreach($people as $person):?>
+            <li ref="person">
+              <span :data-text="name"><?= $person->name ?></span>
+              <button :onclick="deletePerson"> Delete person <?= $person->id ?></button>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+
         <div ref="FormController">
           <input type="text" :data-model="text">
           <p :data-text="text"></p>
