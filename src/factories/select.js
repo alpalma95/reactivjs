@@ -26,7 +26,7 @@ const getCtx = (element, parentCtx) => {
     return ctx;
 };
 
-const createSelectProxy = (root = document) =>
+export const createSelectProxy = (root = document) =>
     new Proxy(
         {},
         {

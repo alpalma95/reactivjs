@@ -1,5 +1,6 @@
 import { hook } from "../streams.js";
 import { safeRemove } from "../factories/effectsManager.js";
+import { createSelectProxy } from "../factories/select.js";
 
 /**
  * @param {Array} array
@@ -44,13 +45,36 @@ const diffList = (array, DOMNode, template) => {
   });
 };
 
+const useClone = (element) => {
+  return element.cloneNode(true)
+}
+
 export const forDirective = {
   selector: "data-for",
   construct: function ({ element }, args) {
-    const [arr, template] = args
-   
+    let [arr, template] = args
+    let ssr_template;
+    console.log(element)
+    if (element.dataset?.populate) {
+      arr.val = JSON.parse(element.dataset.populate)
+      element.removeAttribute('data-populate')
+      
+
+      ssr_template = (person) => {
+        const clone = useClone(element.children[0])
+        clone.$ = createSelectProxy(clone)
+        clone.props = function (ctx) {
+          hydrate({ clone, ctx });
+          appendChildren(clone, children);
+      };
+        const controller = template(person)
+        controller(clone)
+        return clone;
+    }
+    }
+    
     return hook(() => {
-      diffList(arr.val, element, template);
+      diffList(arr.val, element, ssr_template ?? template);
     });
   },
 };

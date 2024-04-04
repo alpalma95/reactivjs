@@ -1,5 +1,6 @@
 
 import { h, stream, $, hook } from "./src";
+import { createSelectProxy } from "./src/factories/select";
 
 const $list = stream([
     {
@@ -159,7 +160,7 @@ $.app([App()])
 $.count({ 'data-text': () => "hi" }) // this won't affect the count refs inside counter controller
 $.CounterController().mount(function({ $, dataset }) {
     let count = stream(+dataset.initialCount)
-
+    $.props({ 'counting': 'banana'})
     $.createScope({ 
         count,
         inc: ({ currentTarget }) => count.val += +currentTarget.dataset.incrementBy
@@ -171,3 +172,25 @@ $.FormController().mount( ({ $ }) => {
 
     $.createScope({ text, clear: () => text.val = '' })
 })
+
+// create ctx based  on person -> return hydrated clone
+
+
+
+let ssr_people = stream([])
+const PersonController = (person) => (personElement) => {
+    const { $ } = personElement
+    $.props({ 'data-key': () => person.id })
+    $.createScope({
+        name: () => person.name,
+        id: () => person.id,
+        deletePerson: () => ssr_people.val = [... ssr_people.val.filter((p) => p.id != person.id)]
+    })
+}
+
+$.SSR({ 'data-for': [ssr_people, PersonController] })
+
+setTimeout(() => {
+    ssr_people.val = [...ssr_people.val, {id: 4, name: "Test"}]
+    console.log(ssr_people.val)
+}, 3000);

@@ -42,11 +42,11 @@
             <button :onclick="inc" data-increment-by="2">Inc count</button>
         </div>
 
-        <ul ref="SSR" data-populate='<?= json_encode($people)?>'>
+        <ul ref="SSR" data-track-by="id" data-populate='<?= json_encode($people)?>'>
           <?php foreach($people as $person):?>
-            <li ref="person">
+            <li ref="person" data-key="<?= $person->id ?>">
               <span :data-text="name"><?= $person->name ?></span>
-              <button :onclick="deletePerson"> Delete person <?= $person->id ?></button>
+              <button :onclick="deletePerson"> Delete person <span :data-text="id"><?= $person->id ?></span></button>
             </li>
           <?php endforeach; ?>
         </ul>
