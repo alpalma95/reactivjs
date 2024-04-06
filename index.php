@@ -45,16 +45,20 @@
 
         <ul ref="SSR" data-track-by="id" data-populate='<?= json_encode($people)?>'>
           <?php foreach($people as $person):?>
-            <li ref="person" data-key="<?= $person->id ?>">
-              <span :data-text="name"><?= $person->name ?></span>
-              <button :onclick="deletePerson" :data-deletes="id" data-deletes="<?= $person->id ?>"> Delete person <span :data-text="id"><?= $person->id ?></span></button>
+            <li ref="person" :data-key="id">
+              <span :data-text="name"><?= $person->name ?? '' ?></span>
+              <button :onclick="deletePerson" :data-deletes="id">
+                Delete person <span :data-text="id"><?= $person->id ?? '' ?></span>
+              </button>
             </li>
           <?php endforeach; ?>
           <?php if(empty($people)):?>
               <template>
-                <li ref="person" data-key="<?= $person->id ?>">
-                  <span :data-text="name"><?= $person->name ?></span>
-                  <button :onclick="deletePerson"> Delete person <span :data-text="id"><?= $person->id ?></span></button>
+                <li ref="person" data-key="<?= $person->id ?? '' ?>">
+                  <span :data-text="name"><?= $person->name ?? '' ?></span>
+                  <button :onclick="deletePerson" :data-deletes="id" data-deletes="<?= $person->id ?? '' ?>">
+                    Delete person <span :data-text="id"><?= $person->id ?? '' ?></span>
+                  </button>
                 </li>
               </template>
           <?php endif; ?>

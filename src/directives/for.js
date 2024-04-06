@@ -58,11 +58,9 @@ const getTemplateFromDOM = (HTMLElement, refController) => {
     clone.$ = createSelectProxy(clone);
     clone.props = function (ctx) {
         hydrate({ element: clone, ctx });
-        // TODO: appendChildren
     };
     return (ArrayElement) => {
-        const controller = refController(ArrayElement);
-        controller(clone);
+        refController(ArrayElement)(clone);
         return clone;
     };
 };
@@ -70,11 +68,12 @@ const getTemplateFromDOM = (HTMLElement, refController) => {
 export const forDirective = {
     selector: "data-for",
     construct: function ({ element: listContainer }, args) {
-        let [arr, template] = args;
+        let [arr, template, fn] = args;
         let ssr_template;
-
+        
         if (listContainer.dataset?.populate) {
-            arr.val = JSON.parse(listContainer.dataset.populate);
+            const raw_list = JSON.parse(listContainer.dataset.populate)
+            arr.val = fn ? raw_list.map(fn) : raw_list;
             listContainer.removeAttribute("data-populate");
             ssr_template = getTemplateFromDOM(listContainer, template);
         }
@@ -87,8 +86,7 @@ export const forDirective = {
                     hydrate({ element: currentChild, ctx });
                     // TODO: appendChildren
                 };
-                const controller = template(listItem);
-                controller(currentChild);
+               template(listItem)(currentChild);
             });
         }
 

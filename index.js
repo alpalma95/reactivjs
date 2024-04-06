@@ -177,9 +177,7 @@ $.FormController().mount( ({ $ }) => {
 
 
 let ssr_people = stream([])
-const PersonItemController = (person) => ({ $, props }) => {
-    props({ 'data-key': person.id })
-    
+const PersonItemController = (person) => ({ $ }) => {
     $.createScope({
         name: () => person.name,
         id: () => person.id,
@@ -187,7 +185,9 @@ const PersonItemController = (person) => ({ $, props }) => {
     })
 }
 
-$.SSR({ 'data-for': [ssr_people, PersonItemController] })
+const transformFn = (item) => ({...item, test: true})
+
+$.SSR({ 'data-for': [ssr_people, PersonItemController, transformFn] })
 
 setTimeout(() => {
     ssr_people.val = [...ssr_people.val, {id: 4, name: "Test"}]

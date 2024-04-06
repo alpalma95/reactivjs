@@ -2,8 +2,8 @@ import { appendChildren, hydrate } from "./shared.js";
 import { getRefs, switchProps } from "../utils.js";
 
 class Mountable extends Array {
-    mount(component) {
-        this.forEach((element) => component(element));
+    mount(controller) {
+        this.forEach((element) => controller(element));
         return this;
     }
 }
@@ -35,15 +35,15 @@ export const createSelectProxy = (root = document) =>
                     let [ctx, children] = switchProps(ctx_raw, children_raw);
                     const found = [...getRefs(root, value)];
                     let parentScope = value === "createScope" ? ctx : null;
-
-                    found.forEach((element) => {
+                    if (parentScope) found.push(root);
+                    found.forEach((element, i) => {
                         if (parentScope) ctx = getCtx(element, parentScope);
 
                         hydrate({ element, ctx });
                         appendChildren(element, children);
                         element.$ = createSelectProxy(element);
-                        element.mount = function (component) {
-                            component(element);
+                        element.mount = function (controller) {
+                            controller(element);
                         };
                         element.props = function (ctx) {
                             hydrate({ element, ctx });
