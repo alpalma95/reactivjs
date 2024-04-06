@@ -1,8 +1,8 @@
-# reactivity
-> still deciding a name tbh
+# Zborjs
+<small>... Or the modern jQuery.</small>
 
-Minimalistic reactivity engine for CSR and SSR. Heavily inspired by jQuery, AlpineJS and VanJS.
+Bring your static HTML to life or create interactive client-side rendered islands _on the fly_. No build step required!
+
+Minimalistic reactivity engine for CSR and SSR (**~2kb** minified + gzipped). Heavily inspired by **Stimulus**, **AlpineJS** and **VanJS**.
 
 ## WIP! 🚧
-
-- Current Min + Gzipped: 2.08kb  🎊

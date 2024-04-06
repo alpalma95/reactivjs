@@ -7,8 +7,8 @@ export default defineConfig({
     build: {
         lib: {
             entry: "src/index.js",
-            name: "reactivity",
-            fileName: (format) => `reactivity.${format}.js`,
+            name: "zborjs",
+            fileName: (format) => `zborjs.${format}.js`,
         },
         rollupOptions: {
             input: 'src/index.js',

@@ -1,4 +1,4 @@
-import { hook } from "../streams.js";
+import { hook } from "apajs-streams";
 
 export const modelDirective = {
   selector: "data-model",

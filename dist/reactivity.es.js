@@ -1,5 +1,5 @@
-const w = (t, e) => (Array.isArray(t) && (e = t, t = {}), [t, e]), v = (t, e) => {
-  const r = [], n = document.createTreeWalker(
+const A = (t, e) => (Array.isArray(t) && (e = t, t = {}), [t, e]), C = (t, e) => {
+  const n = [], r = document.createTreeWalker(
     t,
     NodeFilter.SHOW_ELEMENT,
     function(s) {
@@ -8,12 +8,12 @@ const w = (t, e) => (Array.isArray(t) && (e = t, t = {}), [t, e]), v = (t, e) =>
     }
   );
   let c;
-  for (; c = n.nextNode(); )
-    r.push(c);
-  return r;
-}, d = (t, e) => typeof t == "function" ? t(e) : t.val ?? t;
-let p = null, h = /* @__PURE__ */ new WeakMap();
-class C {
+  for (; c = r.nextNode(); )
+    n.push(c);
+  return n;
+}, u = (t, e) => typeof t == "function" ? t(e) : t.val ?? t;
+let d = null, h = /* @__PURE__ */ new WeakMap();
+class L {
   constructor(e) {
     this.cb = e, this._set = /* @__PURE__ */ new Set();
   }
@@ -21,230 +21,234 @@ class C {
     this._set.forEach((e) => e.delete(this));
   }
 }
-let l = (t) => {
-  p = new C(t), p.cb();
-  let e = p;
-  return p = null, e;
-}, L = (t, e) => {
-  if (p === null)
+let p = (t) => {
+  d = new L(t), d.cb();
+  let e = d;
+  return d = null, e;
+}, R = (t, e) => {
+  if (d === null)
     return;
-  let r;
-  h.has(t) ? r = h.get(t).get(e) : h.set(t, /* @__PURE__ */ new Map([[e, r = /* @__PURE__ */ new Set()]])), p._set.add(r), r.add(p);
-}, R = (t, e, r) => {
+  let n;
+  h.has(t) ? n = h.get(t).get(e) : h.set(t, /* @__PURE__ */ new Map([[e, n = /* @__PURE__ */ new Set()]])), d._set.add(n), n.add(d);
+}, F = (t, e, n) => {
   if (!h.get(t))
     return;
-  h.get(t).get(e).forEach(({ cb: c }) => c(r));
-}, F = (t) => {
+  h.get(t).get(e).forEach(({ cb: c }) => c(n));
+}, T = (t) => {
   if (Array.isArray(t) || typeof t != "function" && typeof t != "object")
     return { val: t };
   if (typeof t == "function") {
     let e = g(1);
-    return l(() => e.val = t()), e;
+    return p(() => e.val = t()), e;
   } else
     return Object.fromEntries(
-      Object.entries(t).map(([e, r]) => [
+      Object.entries(t).map(([e, n]) => [
         e,
-        typeof r == "object" || typeof r == "function" ? g(r) : r
+        typeof n == "object" || typeof n == "function" ? g(n) : n
       ])
     );
 }, g = (t) => {
-  let e = F(t);
+  let e = T(t);
   return new Proxy(e, {
-    get(r, n, c) {
-      return L(r, n), Reflect.get(r, n, c);
+    get(n, r, c) {
+      return R(n, r), Reflect.get(n, r, c);
     },
-    set(r, n, c, s) {
-      if (r[n] !== c) {
-        let o = r[n];
-        Reflect.set(r, n, c, s), R(r, n, o);
+    set(n, r, c, s) {
+      if (n[r] !== c) {
+        let o = n[r];
+        Reflect.set(n, r, c, s), F(n, r, o);
       }
       return !0;
     }
   });
 };
-const T = {
+const W = {
   selector: "data-class",
   construct: function({ element: t }, e) {
-    const r = [];
-    for (let [n, c] of Object.entries(e)) {
-      let s = l(() => {
-        !t.classList.contains(n) && d(c, t) && t.classList.add(n), t.classList.contains(n) && !d(c, t) && t.classList.remove(n);
+    const n = [];
+    for (let [r, c] of Object.entries(e)) {
+      let s = p(() => {
+        !t.classList.contains(r) && u(c, t) && t.classList.add(r), t.classList.contains(r) && !u(c, t) && t.classList.remove(r);
       });
-      r.push(s);
+      n.push(s);
     }
-    return r;
+    return n;
   }
-}, y = /* @__PURE__ */ new WeakMap(), A = (t, e) => {
-  let { isArray: r } = Array, n = y.get(t);
-  n ? y.set(
+}, y = /* @__PURE__ */ new WeakMap(), S = (t, e) => {
+  let { isArray: n } = Array, r = y.get(t);
+  r ? y.set(
     t,
-    r(e) ? [...n, ...e] : [...n, e]
+    n(e) ? [...r, ...e] : [...r, e]
   ) : y.set(t, [e]);
-}, W = (t) => {
+}, _ = (t) => {
   var e;
-  typeof (t == null ? void 0 : t.destroy) == "function" && t.destroy(t), (e = y.get(t)) == null || e.forEach((r) => {
-    r.unhook();
+  typeof (t == null ? void 0 : t.destroy) == "function" && t.destroy(t), (e = y.get(t)) == null || e.forEach((n) => {
+    n.unhook();
   }), y.delete(t), t == null || t.remove();
-}, _ = (t, e, r) => {
-  let n = l(
-    () => t.setAttribute(e, d(r, t))
+}, N = (t, e, n) => {
+  let r = p(
+    () => t.setAttribute(e, u(n, t))
   );
-  A(t, n);
+  S(t, r);
 };
-class N extends Array {
+class j extends Array {
   mount(e) {
-    return this.forEach((r) => e(r)), this;
+    return this.forEach((n) => e(n)), this;
   }
 }
-const j = (t, e) => {
-  var n;
-  let r = {};
-  return (n = t.getAttributeNames()) == null || n.forEach((c) => {
-    c.startsWith(":") && (r[c.replaceAll(":", "")] = e[t.getAttribute(c)]) && t.removeAttribute(c);
-  }), r;
+const P = (t, e) => {
+  var r;
+  let n = {};
+  return (r = t.getAttributeNames()) == null || r.forEach((c) => {
+    c.startsWith(":") && (n[c.replaceAll(":", "")] = e[t.getAttribute(c)]) && t.removeAttribute(c);
+  }), n;
 }, m = (t = document) => new Proxy(
   {},
   {
-    get: (e, r) => function(n, c = []) {
-      let [s, o] = w(n, c);
-      const f = [...v(t, r)];
-      let u = r === "createScope" ? s : null;
-      return f.forEach((i) => {
-        u && (s = j(i, u)), E({ element: i, ctx: s }), x(i, o), i.$ = m(i), i.mount = function(a) {
-          a(i);
-        }, i.props = function(a) {
-          E({ element: i, ctx: a }), x(i, o);
+    get: (e, n) => function(r, c = []) {
+      let [s, o] = A(r, c);
+      const f = [...C(t, n)];
+      let a = n === "createScope" ? s : null;
+      return a && f.push(t), f.forEach((i, l) => {
+        a && (s = P(i, a)), E({ element: i, ctx: s }), w(i, o), i.$ = m(i), i.mount = function(x) {
+          x(i);
+        }, i.props = function(x) {
+          E({ element: i, ctx: x }), w(i, o);
         };
-      }), f.length === 1 ? f[0] : new N(...f);
+      }), f.length === 1 ? f[0] : new j(...f);
     }
   }
-), M = m(), P = (t, e, r) => {
-  const n = e.children, { trackBy: c } = e.dataset;
-  t.length < n.length && [...n].filter(
+), K = m(), q = (t, e, n) => {
+  const r = e.children, { trackBy: c } = e.dataset;
+  t.length < r.length && [...r].filter(
     (o) => !t.some((f) => o.dataset.key == f[c])
   ).forEach((o) => {
-    W(
+    _(
       e.querySelector(`[data-key="${o.dataset.key}"]`)
     );
   }), t.forEach((s, o) => {
-    n[o] || e.appendChild(r(s));
-    const f = s[c] == n[o].dataset.key, u = t.length === n.length, i = `[data-key="${s[c]}"]`;
-    if (!f && u) {
-      const a = e.querySelector(i) ?? r(s);
-      e.replaceChild(a, n[o]);
+    r[o] || e.appendChild(n(s));
+    const f = s[c] == r[o].dataset.key, a = t.length === r.length, i = `[data-key="${s[c]}"]`;
+    if (!f && a) {
+      const l = e.querySelector(i) ?? n(s);
+      e.replaceChild(l, r[o]);
     }
-    if (!f && !u) {
-      const a = e.querySelector(i) ?? r(s);
-      e.insertBefore(a, n[o]);
+    if (!f && !a) {
+      const l = e.querySelector(i) ?? n(s);
+      e.insertBefore(l, r[o]);
     }
   });
-}, q = (t, e) => {
-  var n;
-  const r = ((n = t.children[0]) == null ? void 0 : n.cloneNode(!0)) ?? t.querySelector("template").content.children[0];
-  return r.$ = m(r), r.props = function(c) {
-    E({ element: r, ctx: c });
-  }, (c) => (e(c)(r), r);
-}, D = {
+}, D = (t, e) => {
+  var r;
+  const n = ((r = t.children[0]) == null ? void 0 : r.cloneNode(!0)) ?? t.querySelector("template").content.children[0];
+  return n.$ = m(n), n.props = function(c) {
+    E({ element: n, ctx: c });
+  }, (c) => (e(c)(n), n);
+}, $ = {
   selector: "data-for",
   construct: function({ element: t }, e) {
-    var s;
-    let [r, n] = e, c;
-    return (s = t.dataset) != null && s.populate && (r.val = JSON.parse(t.dataset.populate), t.removeAttribute("data-populate"), c = q(t, n)), c && r.val.forEach((o, f) => {
-      const u = t.children[f];
-      u.$ = m(u), u.props = function(a) {
-        E({ element: u, ctx: a });
-      }, n(o)(u);
-    }), l(() => {
-      P(r.val, t, c ?? n);
-    });
-  }
-}, $ = {
-  selector: "data-if",
-  construct: function(t, e) {
-    let r = new Comment("data-if");
-    return l(() => {
-      !d(e, t.element) && !t.element.isConnected && (t.replaceWith = r), r.isConnected && d(e, t.element) && (r.replaceWith(t.element), typeof t.element.init == "function" && t.element.init(t.element)), t.element.isConnected && !d(e, t.element) && (typeof t.element.destroy == "function" && t.element.destroy(t.element), t.element.replaceWith(r));
+    var o;
+    let [n, r, c] = e, s;
+    if ((o = t.dataset) != null && o.populate) {
+      const f = JSON.parse(t.dataset.populate);
+      n.val = c ? f.map(c) : f, t.removeAttribute("data-populate"), s = D(t, r);
+    }
+    return s && n.val.forEach((f, a) => {
+      const i = t.children[a];
+      i.$ = m(i), i.props = function(l) {
+        E({ element: i, ctx: l });
+      }, r(f)(i);
+    }), p(() => {
+      q(n.val, t, s ?? r);
     });
   }
 }, I = {
+  selector: "data-if",
+  construct: function(t, e) {
+    let n = new Comment("data-if");
+    return p(() => {
+      !u(e, t.element) && !t.element.isConnected && (t.replaceWith = n), n.isConnected && u(e, t.element) && (n.replaceWith(t.element), typeof t.element.init == "function" && t.element.init(t.element)), t.element.isConnected && !u(e, t.element) && (typeof t.element.destroy == "function" && t.element.destroy(t.element), t.element.replaceWith(n));
+    });
+  }
+}, B = {
   selector: "data-model",
   construct: function({ element: t }, e) {
     return t.addEventListener("input", () => {
       e.val = t.value;
-    }), l(() => {
+    }), p(() => {
       t.value = e.val;
     });
   }
-}, B = {
+}, O = {
   selector: "data-show",
   construct: function({ element: t }, e) {
-    return l(() => t.style.display = d(e, t) ? null : "none");
+    return p(() => t.style.display = u(e, t) ? null : "none");
   }
-}, O = {
+}, H = {
   selector: "data-text",
   construct: function({ element: t }, e) {
-    return l(() => {
-      t.textContent === d(e, t) || t instanceof Comment || (t.textContent = d(e, t));
+    return p(() => {
+      t.textContent === u(e, t) || t instanceof Comment || (t.textContent = u(e, t));
     });
   }
-}, S = [
-  D,
-  O,
-  T,
-  B,
+}, v = [
   $,
-  I
-], H = Object.fromEntries(
-  S.map((t) => [t.selector, t])
-), K = (t) => {
-  S.push(t);
+  H,
+  W,
+  O,
+  I,
+  B
+], J = Object.fromEntries(
+  v.map((t) => [t.selector, t])
+), U = (t) => {
+  v.push(t);
 }, E = (t) => {
   for (const e in t.ctx) {
-    let r = H[e];
-    const n = e.startsWith("on") && typeof t.ctx[e] == "function";
+    let n = J[e];
+    const r = e.startsWith("on") && typeof t.ctx[e] == "function";
     if (e === "init" || e === "destroy") {
       e === "init" && t.ctx[e](t.element), t.element[e] = t.ctx[e];
       continue;
     }
-    if (r) {
-      let c = r.construct(t, t.ctx[e]);
-      A(t.element, c);
+    if (n) {
+      let c = n.construct(t, t.ctx[e]);
+      S(t.element, c);
       continue;
     }
-    if (n) {
+    if (r) {
       t.element.addEventListener(e.slice(2), t.ctx[e]);
       continue;
     }
     if (typeof t.ctx[e] == "function" || typeof t.ctx[e] == "object") {
-      _(t.element, e, t.ctx[e]);
+      N(t.element, e, t.ctx[e]);
       continue;
     }
     t.element.setAttribute(e, t.ctx[e]);
   }
-}, x = (t, e) => {
-  e.length && e.forEach((r) => {
-    let n = r instanceof HTMLElement || r instanceof Comment || r instanceof DocumentFragment ? r : new Text(r);
-    t.appendChild(n);
+}, w = (t, e) => {
+  e.length && e.forEach((n) => {
+    let r = n instanceof HTMLElement || n instanceof Comment || n instanceof DocumentFragment ? n : new Text(n);
+    t.appendChild(r);
   });
-}, J = (t) => function(e, r = []) {
-  let [n, c] = w(e, r), s = {
+}, M = (t) => function(e, n = []) {
+  let [r, c] = A(e, n), s = {
     element: t === "fragment" ? new DocumentFragment() : document.createElement(t),
-    ctx: n
+    ctx: r
   };
-  return E(s), x(s.element, c), s.replaceWith ?? s.element;
-}, U = new Proxy(
+  return E(s), w(s.element, c), s.replaceWith ?? s.element;
+}, z = new Proxy(
   {},
   {
     get: function(t, e) {
-      return e in t || Reflect.set(t, e, J(e)), t[e];
+      return e in t || Reflect.set(t, e, M(e)), t[e];
     }
   }
 );
 export {
-  M as $,
-  U as h,
-  l as hook,
-  K as registerDirective,
-  W as safeRemove,
+  K as $,
+  z as h,
+  p as hook,
+  U as registerDirective,
+  _ as safeRemove,
   g as stream
 };

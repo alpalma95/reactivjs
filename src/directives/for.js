@@ -1,6 +1,6 @@
-import { hook } from "../streams.js";
+import { hook } from "apajs-streams";
 import { safeRemove } from "../factories/effectsManager.js";
-import { createSelectProxy } from "../factories/select.js";
+import { createSelectProxy } from "../factories/selectFactory.js";
 import { hydrate } from "../factories/shared.js";
 
 /**

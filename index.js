@@ -1,6 +1,5 @@
 
-import { h, stream, $, hook } from "./src";
-import { createSelectProxy } from "./src/factories/select";
+import { h, stream, $ } from "./src";
 
 const $list = stream([
     {

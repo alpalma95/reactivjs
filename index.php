@@ -54,7 +54,7 @@
           <?php endforeach; ?>
           <?php if(empty($people)):?>
               <template>
-                <li ref="person" data-key="<?= $person->id ?? '' ?>">
+                <li ref="person" :data-key="id">
                   <span :data-text="name"><?= $person->name ?? '' ?></span>
                   <button :onclick="deletePerson" :data-deletes="id" data-deletes="<?= $person->id ?? '' ?>">
                     Delete person <span :data-text="id"><?= $person->id ?? '' ?></span>
