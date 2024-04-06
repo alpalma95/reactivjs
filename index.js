@@ -171,10 +171,6 @@ $.FormController().mount( ({ $ }) => {
     $.createScope({ text, clear: () => text.val = '' })
 })
 
-// create ctx based  on person -> return hydrated clone
-
-
-
 let ssr_people = stream([])
 const PersonItemController = (person) => ({ $ }) => {
     $.createScope({

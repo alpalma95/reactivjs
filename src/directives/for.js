@@ -1,6 +1,6 @@
 import { hook } from "apajs-streams";
 import { safeRemove } from "../factories/effectsManager.js";
-import { createSelectProxy } from "../factories/selectFactory.js";
+import { attachMagics, createSelectProxy } from "../factories/selectFactory.js";
 import { hydrate } from "../factories/shared.js";
 
 /**
@@ -54,11 +54,9 @@ const getTemplateFromDOM = (HTMLElement, refController) => {
     const clone =
         HTMLElement.children[0]?.cloneNode(true) ??
         HTMLElement.querySelector("template").content.children[0];
-    // TODO: Refactor logic below as we're doing basically the same thing in select factory
-    clone.$ = createSelectProxy(clone);
-    clone.props = function (ctx) {
-        hydrate({ element: clone, ctx });
-    };
+ 
+    attachMagics(clone)
+
     return (ArrayElement) => {
         refController(ArrayElement)(clone);
         return clone;
@@ -81,11 +79,8 @@ export const forDirective = {
             // At this point, state and child nodes should be the same length
             arr.val.forEach((listItem, index) => {
                 const currentChild = listContainer.children[index];
-                currentChild.$ = createSelectProxy(currentChild);
-                currentChild.props = function (ctx) {
-                    hydrate({ element: currentChild, ctx });
-                    // TODO: appendChildren
-                };
+                attachMagics(currentChild)
+               
                template(listItem)(currentChild);
             });
         }

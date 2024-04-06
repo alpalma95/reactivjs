@@ -26,6 +26,17 @@ const getCtx = (element, parentCtx) => {
     return ctx;
 };
 
+export const attachMagics = (HTMLElement, children = []) => {
+    HTMLElement.$ = createSelectProxy(HTMLElement);
+    HTMLElement.mount = function (controller) {
+        controller(HTMLElement);
+    };
+    HTMLElement.setProps = function (ctx) {
+        hydrate({ element: HTMLElement, ctx });
+        if (children.length) appendChildren(HTMLElement, children);
+    };
+}
+
 export const createSelectProxy = (root = document) =>
     new Proxy(
         {},
@@ -38,17 +49,9 @@ export const createSelectProxy = (root = document) =>
                     if (parentScope) found.push(root);
                     found.forEach((element, i) => {
                         if (parentScope) ctx = getCtx(element, parentScope);
-
                         hydrate({ element, ctx });
                         appendChildren(element, children);
-                        element.$ = createSelectProxy(element);
-                        element.mount = function (controller) {
-                            controller(element);
-                        };
-                        element.props = function (ctx) {
-                            hydrate({ element, ctx });
-                            appendChildren(element, children);
-                        };
+                        attachMagics(element, ctx, children)
                     });
                     return found.length === 1
                         ? found[0]
