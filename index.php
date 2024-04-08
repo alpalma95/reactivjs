@@ -17,6 +17,17 @@
   foreach ($people_ssr as $person) {
     $people[] = (object)$person;
   }
+
+  $PersonComponent = function($person = null) {
+    return <<<HTML
+        <li ref="person" :data-key="id">
+          <span :z-text="name"><?= $person->name ?? '' ?></span>
+          <button :onclick="deletePerson" :data-deletes="id">
+            Delete person <span :z-text="id"><?= $person->id ?? '' ?></span>
+          </button>
+        </li>
+    HTML;
+  };
   
 ?> 
 
@@ -35,39 +46,29 @@
         <div ref="count"></div>
         <!-- "Props" are just dataset properties -->
         <div ref="CounterController" data-initial-count="1">
-            <span :data-text="count" :test="count">0</span>
+            <span :z-text="count" :test="count">0</span>
             <button :onclick="inc" data-increment-by="1">Inc count</button>
         </div>
         <div ref="CounterController" data-initial-count="2">
-            <span :data-text="count" :test="count">0</span>
+            <span :z-text="count" :test="count">0</span>
             <button :onclick="inc" data-increment-by="2">Inc count</button>
         </div>
 
         <ul ref="SSR" data-track-by="id" data-populate='<?= json_encode($people)?>'>
-          <?php foreach($people as $person):?>
-            <li ref="person" :data-key="id">
-              <span :data-text="name"><?= $person->name ?? '' ?></span>
-              <button :onclick="deletePerson" :data-deletes="id">
-                Delete person <span :data-text="id"><?= $person->id ?? '' ?></span>
-              </button>
-            </li>
-          <?php endforeach; ?>
+          <?php foreach($people as $person):
+            echo $PersonComponent($person);
+          endforeach; ?>
           <?php if(empty($people)):?>
               <template>
-                <li ref="person" :data-key="id">
-                  <span :data-text="name"><?= $person->name ?? '' ?></span>
-                  <button :onclick="deletePerson" :data-deletes="id" data-deletes="<?= $person->id ?? '' ?>">
-                    Delete person <span :data-text="id"><?= $person->id ?? '' ?></span>
-                  </button>
-                </li>
+                <?= $PersonComponent() ?>
               </template>
           <?php endif; ?>
         </ul>
 
         <div ref="FormController">
-          <input type="text" :data-model="text">
-          <p :data-text="text"></p>
-          <p :data-if="text">Input is not empty!</p>
+          <input type="text" :z-model="text">
+          <p :z-text="text"></p>
+          <p :z-if="text">Input is not empty!</p>
           <button :onclick="clear">clear input</button>
         </div>
     <div ref="app"> <!---Hydrated client side --> </div>

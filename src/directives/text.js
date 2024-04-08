@@ -2,7 +2,7 @@ import { hook } from "apajs-streams";
 import { doBinding } from '../utils.js'
 
 export const textDirective = {
-  selector: "data-text",
+  selector: "z-text",
   construct: function ({ element }, binding) {
     return hook(() => {
       /**

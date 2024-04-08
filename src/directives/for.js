@@ -1,7 +1,6 @@
 import { hook } from "apajs-streams";
 import { safeRemove } from "../factories/effectsManager.js";
-import { attachMagics, createSelectProxy } from "../factories/selectFactory.js";
-import { hydrate } from "../factories/shared.js";
+import { attachMagics } from "../factories/selectFactory.js";
 
 /**
  * @param {Array} array
@@ -26,9 +25,7 @@ const diffList = (array, DOMNode, template) => {
     }
 
     array.forEach((element, index) => {
-        if (!children[index]) {
-            DOMNode.appendChild(template(element));
-        }
+        if (!children[index]) DOMNode.appendChild(template(element));
 
         const isEqual = element[trackBy] == children[index].dataset.key;
         const areSameLength = array.length === children.length;
@@ -54,8 +51,8 @@ const getTemplateFromDOM = (HTMLElement, refController) => {
     const clone =
         HTMLElement.children[0]?.cloneNode(true) ??
         HTMLElement.querySelector("template").content.children[0];
- 
-    attachMagics(clone)
+
+    attachMagics(clone);
 
     return (ArrayElement) => {
         refController(ArrayElement)(clone);
@@ -64,13 +61,13 @@ const getTemplateFromDOM = (HTMLElement, refController) => {
 };
 
 export const forDirective = {
-    selector: "data-for",
+    selector: "z-for",
     construct: function ({ element: listContainer }, args) {
         let [arr, template, fn] = args;
         let ssr_template;
-        
+
         if (listContainer.dataset?.populate) {
-            const raw_list = JSON.parse(listContainer.dataset.populate)
+            const raw_list = JSON.parse(listContainer.dataset.populate);
             arr.val = fn ? raw_list.map(fn) : raw_list;
             listContainer.removeAttribute("data-populate");
             ssr_template = getTemplateFromDOM(listContainer, template);
@@ -79,9 +76,8 @@ export const forDirective = {
             // At this point, state and child nodes should be the same length
             arr.val.forEach((listItem, index) => {
                 const currentChild = listContainer.children[index];
-                attachMagics(currentChild)
-               
-               template(listItem)(currentChild);
+                attachMagics(currentChild);
+                template(listItem)(currentChild);
             });
         }
 

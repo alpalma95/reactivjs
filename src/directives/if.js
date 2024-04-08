@@ -2,9 +2,9 @@ import { hook } from "apajs-streams";
 import { doBinding } from "../utils.js";
 
 export const ifDirective = {
-  selector: "data-if",
+  selector: "z-if",
   construct: function ( block , binding) {
-    let comment = new Comment('data-if');
+    let comment = new Comment('z-if');
     
     return hook(() => {
 
