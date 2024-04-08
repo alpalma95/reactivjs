@@ -174,8 +174,8 @@ $.FormController().mount( ({ $ }) => {
 let ssr_people = stream([])
 const PersonItemController = (person) => ({ $ }) => {
     $.createScope({
-        name: () => person.name,
-        id: () => person.id,
+        name: person.name,
+        id: person.id,
         deletePerson: () => ssr_people.val = [... ssr_people.val.filter((p) => p.id != person.id)]
     })
 }
@@ -186,5 +186,4 @@ $.SSR({ 'z-for': [ssr_people, PersonItemController, transformFn] })
 
 setTimeout(() => {
     ssr_people.val = [...ssr_people.val, {id: 4, name: "Test"}]
-    console.log(ssr_people.val)
 }, 3000);
