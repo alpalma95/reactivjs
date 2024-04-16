@@ -61,7 +61,7 @@ const getTemplateFromDOM = (HTMLElement, refController) => {
 };
 
 export const forDirective = {
-    selector: "z-for",
+    selector: "rv-for",
     construct: function ({ element: listContainer }, args) {
         let [arr, template, fn] = args;
         let ssr_template;

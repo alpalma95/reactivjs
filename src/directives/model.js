@@ -1,7 +1,7 @@
 import { hook } from "apajs-streams";
 
 export const modelDirective = {
-  selector: "z-model",
+  selector: "rv-model",
   construct: function ({ element }, variable) {
     element.addEventListener('input', () => {
         variable.val = element.value

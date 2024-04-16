@@ -2,7 +2,7 @@ import { hook } from "apajs-streams";
 import { doBinding } from "../utils.js";
 
 export const classDirective = {
-  selector: "z-class",
+  selector: "rv-class",
   construct: function ({element}, classObject) {
     const effects = [];
     for (let [className, binding] of Object.entries(classObject)) {

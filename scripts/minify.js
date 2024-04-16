@@ -21,8 +21,8 @@ const config = {
   },
   module: true,
   sourceMap: {
-    filename: "zborjs.min.js",
-    url: "zborjs.min.js.map",
+    filename: "reactiv.min.js",
+    url: "reactiv.min.js.map",
   },
   output: {
     comments: false,
@@ -30,12 +30,12 @@ const config = {
 };
 
 const doMinify = async () => {
-  const code = fs.readFileSync("./dist/zborjs.es.js", "utf8");
+  const code = fs.readFileSync("./dist/reactiv.es.js", "utf8");
 
   const minified = await minify(code, config);
 
-  fs.writeFileSync("./dist/zborjs.es.min.js", minified.code);
+  fs.writeFileSync("./dist/reactiv.es.min.js", minified.code);
 
-  fs.writeFileSync("./dist/zborjs.min.js.map", minified.map);
+  fs.writeFileSync("./dist/reactiv.min.js.map", minified.map);
 };
 doMinify();

@@ -85,19 +85,19 @@ const Counter = (props = {}) => {
     };
 
     return h.button(
-        { ...props, onclick: () => $count.val++, "z-class": zClass },
+        { ...props, onclick: () => $count.val++, "rv-class": zClass },
         [
             h.span(
                 {
-                    "z-show": () => $count.val > 0,
+                    "rv-show": () => $count.val > 0,
                     "aria-hidden": () => $count.val === 0,
                 },
                 ["You clicked "]
             ),
-            h.span({ "z-text": () => $count.val }),
+            h.span({ "rv-text": () => $count.val }),
             h.span({
-                "z-text": () => ($count.val === 1 ? " time" : " times"),
-                "z-show": () => $count.val > 0,
+                "rv-text": () => ($count.val === 1 ? " time" : " times"),
+                "rv-show": () => $count.val > 0,
                 "aria-hidden": () => $count.val === 0,
             }),
         ]
@@ -108,19 +108,19 @@ const TestIf = () => {
     let $count = stream(0);
     return h.div({}, [
         h.button({ onclick: () => $count.val++ }, ["Click me"]),
-        h.div({ "data-test": "hi", "z-if": () => $count.val > 0 }, [
-            h.span({ "z-text": () => $count.val }),
-            h.span({ "z-if": () => $count.val % 2 !== 0 }, [
+        h.div({ "data-test": "hi", "rv-if": () => $count.val > 0 }, [
+            h.span({ "rv-text": () => $count.val }),
+            h.span({ "rv-if": () => $count.val % 2 !== 0 }, [
                 " Count is odd",
             ]),
-            h.span({ "z-if": () => $count.val % 2 == 0 }, [
+            h.span({ "rv-if": () => $count.val % 2 == 0 }, [
                 " Count is even",
             ]),
             h.br(),
             h.button({ onclick: () => console.log("clicked") }, [
                 h.span({}, [
                     h.span({
-                        "z-text": () => {
+                        "rv-text": () => {
                             return $count.val % 3 === 0
                                 ? "fizz"
                                 : $count.val % 5 === 0
@@ -130,7 +130,7 @@ const TestIf = () => {
                     }),
                     h.span(
                         {
-                            "z-if": () =>
+                            "rv-if": () =>
                                 $count.val % 5 === 0 && $count.val % 3 === 0,
                         },
                         [" fizzBuzz"]
@@ -149,14 +149,14 @@ const App = () =>
         TestIf(),
         AddBtn(),
         SortButton(),
-        h.ul({ "z-for": [$list, personView], "data-track-by": "id"}),
+        h.ul({ "rv-for": [$list, personView], "data-track-by": "id"}),
         Counter({ "data-whatever": "test1" }), // to be merged with the root element of the component
         Counter(),
     ]);
 
 $.app([App()])
 
-$.count({ 'z-text': () => "hi" }) // this won't affect the count refs inside counter controller
+$.count({ 'rv-text': () => "hi" }) // this won't affect the count refs inside counter controller
 $.CounterController().mount(function({ $, dataset }) {
     let count = stream(+dataset.initialCount)
     $.createScope({ 
@@ -182,7 +182,7 @@ const PersonItemController = (person) => ({ $ }) => {
 
 const transformFn = (item) => ({...item, test: true})
 
-$.SSR({ 'z-for': [ssr_people, PersonItemController, transformFn] })
+$.SSR({ 'rv-for': [ssr_people, PersonItemController, transformFn] })
 
 setTimeout(() => {
     ssr_people.val = [...ssr_people.val, {id: 4, name: "Test"}]

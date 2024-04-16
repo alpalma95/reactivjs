@@ -1,14 +1,14 @@
 {
-  "name": "zborjs",
-  "version": "0.0.1",
+  "name": "reactivjs",
+  "version": "0.1.0",
   "description": "Minimalistic reactivity engine for CSR and SSR. Heavily inspired by Stimulus, AlpineJS and VanJS.",
   "main": "/src/index.js",
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite",
-    "build": "bunx --bun vite build && bun ./scripts/minify.js && gzip -c dist/zborjs.es.min.js > dist/zborjs.es.min.gz",
+    "build": "bunx --bun vite build && bun ./scripts/minify.js && gzip -c dist/reactivjs.es.min.js > dist/reactivjs.es.min.gz",
     "dev:node": "vite",
-    "build:node": "vite build && node ./scripts/minify.js && gzip -c dist/zborjs.es.min.js > dist/zborjs.es.min.gz",
+    "build:node": "vite build && node ./scripts/minify.js && gzip -c dist/reactivjs.es.min.js > dist/reactivjs.es.min.gz",
     "preview": "vite preview",
     "test": "vitest run"
   },
@@ -18,16 +18,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alpalma95/zborjs.git"
+    "url": "git+https://github.com/alpalma95/reactivjs.git"
   },
   "exports": {
     ".": {
-      "import": "./dist/zborjs.es.min.js",
-      "require": "./dist/zborjs.umd.js"
+      "import": "./dist/reactivjs.es.min.js",
+      "require": "./dist/reactivjs.umd.js"
     }
   },
-  "unpkg": "./dist/zborjs.es.min.js",
-  "module": "./dist/zborjs.es.js",
+  "unpkg": "./dist/reactivjs.es.min.js",
+  "module": "./dist/reactivjs.es.js",
   "keywords": [
     "reactivity"
   ],

@@ -21,9 +21,9 @@
   $PersonComponent = function($person = null) {
     return <<<HTML
         <li ref="person" :data-key="id">
-          <span :z-text="name"><?= $person->name ?? '' ?></span>
+          <span :rv-text="name"><?= $person->name ?? '' ?></span>
           <button :onclick="deletePerson" :data-deletes="id">
-            Delete person <span :z-text="id"><?= $person->id ?? '' ?></span>
+            Delete person <span :rv-text="id"><?= $person->id ?? '' ?></span>
           </button>
         </li>
     HTML;
@@ -46,11 +46,11 @@
         <div ref="count"></div>
         <!-- "Props" are just dataset properties -->
         <div ref="CounterController" data-initial-count="1">
-            <span :z-text="count" :test="count">0</span>
+            <span :rv-text="count" :test="count">0</span>
             <button :onclick="inc" data-increment-by="1">Inc count</button>
         </div>
         <div ref="CounterController" data-initial-count="2">
-            <span :z-text="count" :test="count">0</span>
+            <span :rv-text="count" :test="count">0</span>
             <button :onclick="inc" data-increment-by="2">Inc count</button>
         </div>
 
@@ -66,9 +66,9 @@
         </ul>
 
         <div ref="FormController">
-          <input type="text" :z-model="text">
-          <p :z-text="text"></p>
-          <p :z-if="text">Input is not empty!</p>
+          <input type="text" :rv-model="text">
+          <p :rv-text="text"></p>
+          <p :rv-if="text">Input is not empty!</p>
           <button :onclick="clear">clear input</button>
         </div>
     <div ref="app"> <!---Hydrated client side --> </div>
