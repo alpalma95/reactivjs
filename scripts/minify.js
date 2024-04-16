@@ -21,8 +21,8 @@ const config = {
   },
   module: true,
   sourceMap: {
-    filename: "reactiv.min.js",
-    url: "reactiv.min.js.map",
+    filename: "reactivjs.min.js",
+    url: "reactivjs.min.js.map",
   },
   output: {
     comments: false,
@@ -30,12 +30,12 @@ const config = {
 };
 
 const doMinify = async () => {
-  const code = fs.readFileSync("./dist/reactiv.es.js", "utf8");
+  const code = fs.readFileSync("./dist/reactivjs.es.js", "utf8");
 
   const minified = await minify(code, config);
 
-  fs.writeFileSync("./dist/reactiv.es.min.js", minified.code);
+  fs.writeFileSync("./dist/reactivjs.es.min.js", minified.code);
 
-  fs.writeFileSync("./dist/reactiv.min.js.map", minified.map);
+  fs.writeFileSync("./dist/reactivjs.min.js.map", minified.map);
 };
 doMinify();
