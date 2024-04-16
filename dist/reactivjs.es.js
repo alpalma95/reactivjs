@@ -171,20 +171,22 @@ const N = (t, e) => {
       t.textContent === u(e, t) || t instanceof Comment || (t.textContent = u(e, t));
     });
   }
-}, S = [
+}, B = [
   q,
   $,
   F,
   T,
   D,
   I
-], B = Object.fromEntries(
-  S.map((t) => [t.selector, t])
-), z = (t) => {
-  S.push(t);
+], S = Object.fromEntries(
+  B.map((t) => [t.selector, t])
+), z = (...t) => {
+  t.forEach(
+    (e) => S[e.selector] = e
+  );
 }, g = (t) => {
   for (const e in t.ctx) {
-    let n = B[e];
+    let n = S[e];
     const r = e.startsWith("on") && typeof t.ctx[e] == "function";
     if (e === "init" || e === "destroy") {
       e === "init" && t.ctx[e](t.element), t.element[e] = t.ctx[e];
@@ -192,7 +194,7 @@ const N = (t, e) => {
     }
     if (n) {
       let c = n.construct(t, t.ctx[e]);
-      m(t.element, c);
+      c && m(t.element, c);
       continue;
     }
     if (r) {
@@ -228,7 +230,7 @@ export {
   J as $,
   K as h,
   l as hook,
-  z as registerDirective,
+  z as registerDirectives,
   W as safeRemove,
   x as stream
 };
