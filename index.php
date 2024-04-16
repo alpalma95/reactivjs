@@ -45,8 +45,8 @@
         <h1> Generated server side </h1>
         <div ref="count"></div>
         <!-- "Props" are just dataset properties -->
-        <div ref="CounterController" data-initial-count="1">
-            <span :rv-text="count" :test="count">0</span>
+        <div ref="CounterController" data-initial-count="1" :rv-custom>
+            <span :rv-text="count" :test="count" :rv-custom>0</span>
             <button :onclick="inc" data-increment-by="1">Inc count</button>
         </div>
         <div ref="CounterController" data-initial-count="2">

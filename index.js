@@ -1,5 +1,15 @@
 
-import { h, stream, $ } from "./src";
+import { registerDirectives, h, stream, $} from "./src";
+
+export const customDirective = {
+    selector: "rv-custom",
+    construct: function ({ element }, args) {
+        console.log(element, "custom directive working!", args)
+    },
+  };
+
+registerDirectives(customDirective)
+
 
 const $list = stream([
     {
@@ -47,6 +57,7 @@ const AddBtn = () => {
     return h.button(
         {
             onclick: add,
+            "rv-custom": "t"
         },
         ["Add person"]
     );

@@ -17,7 +17,7 @@ export const hydrate = (block) => {
 
         if (currentDirective) {
             let effect = currentDirective.construct(block, block.ctx[attr]);
-            registerEffect(block.element, effect);
+            if (effect) registerEffect(block.element, effect);
             continue;
         }
         
