@@ -20,9 +20,11 @@ const getCtx = (element, parentCtx) => {
     element.getAttributeNames()?.forEach((attribute) => {
         if (attribute.startsWith(":"))
             (ctx[attribute.replaceAll(":", "")] =
-                parentCtx[element.getAttribute(attribute)]) &&
+                (parentCtx[element.getAttribute(attribute)]) ?? element.getAttribute(attribute)) &&
                 element.removeAttribute(attribute);
     });
+    // if (ctx.hasOwnProperty('rv-custom')) console.log(ctx)
+    console.log(ctx)
     return ctx;
 };
 
