@@ -86,7 +86,7 @@ const P = (t, e) => {
   let n = {};
   return (r = t.getAttributeNames()) == null || r.forEach((s) => {
     s.startsWith(":") && (n[s.replaceAll(":", "")] = e[t.getAttribute(s)] ?? t.getAttribute(s)) && t.removeAttribute(s);
-  }), console.log(n), n;
+  }), n;
 }, g = (t, e = []) => {
   t.$ = A(t), t.mount = function(n) {
     n(t);

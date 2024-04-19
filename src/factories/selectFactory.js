@@ -23,8 +23,6 @@ const getCtx = (element, parentCtx) => {
                 (parentCtx[element.getAttribute(attribute)]) ?? element.getAttribute(attribute)) &&
                 element.removeAttribute(attribute);
     });
-    // if (ctx.hasOwnProperty('rv-custom')) console.log(ctx)
-    console.log(ctx)
     return ctx;
 };
 
