@@ -40,6 +40,17 @@
     <title>Document</title>
     <script type="module" src="http://localhost:5173/@vite/client"></script>
     <script type="module" src="http://localhost:5173/index.js"></script>
+    <style>
+      .class1 {
+        color: red;
+      }
+      .class2 {
+        color: blue;
+      }
+      .class3 {
+        color: green;
+      }
+    </style>
   </head>
   <body>
         <h1> Generated server side </h1>

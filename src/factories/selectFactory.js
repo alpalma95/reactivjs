@@ -16,13 +16,14 @@ class Mountable extends Array {
  * @param { Object } parentCtx
  */
 const getCtx = (element, parentCtx) => {
-    let ctx = {};
-    element.getAttributeNames()?.forEach((attribute) => {
+    let ctx = element.getAttributeNames()?.reduce((ctx, attribute) => {
         if (attribute.startsWith(":"))
             (ctx[attribute.replaceAll(":", "")] =
-                (parentCtx[element.getAttribute(attribute)]) ?? element.getAttribute(attribute)) &&
+                parentCtx[element.getAttribute(attribute)] ??
+                element.getAttribute(attribute)) &&
                 element.removeAttribute(attribute);
-    });
+                return ctx;
+    }, {});
     return ctx;
 };
 
@@ -35,7 +36,7 @@ export const attachMagics = (HTMLElement, children = []) => {
         hydrate({ element: HTMLElement, ctx });
         if (children.length) appendChildren(HTMLElement, children);
     };
-}
+};
 
 export const createSelectProxy = (root = document) =>
     new Proxy(
@@ -51,7 +52,7 @@ export const createSelectProxy = (root = document) =>
                         if (parentScope) ctx = getCtx(element, parentScope);
                         hydrate({ element, ctx });
                         appendChildren(element, children);
-                        attachMagics(element, ctx, children)
+                        attachMagics(element, ctx, children);
                     });
                     return found.length === 1
                         ? found[0]

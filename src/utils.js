@@ -21,7 +21,6 @@ export const switchProps = (props, children) => {
  * @returns {Array<HTMLElement>}
  */
 export const getRefs = (root, selector) => {
-    const refs = [];
     /** @type {TreeWalker} */
     const walker = document.createTreeWalker(
         root,
@@ -39,6 +38,8 @@ export const getRefs = (root, selector) => {
             return NodeFilter.FILTER_SKIP;
         }
     );
+
+    const refs = [];
 
     let currentNode;
     while ((currentNode = walker.nextNode())) refs.push(currentNode);

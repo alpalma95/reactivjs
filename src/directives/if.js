@@ -4,7 +4,7 @@ import { doBinding } from "../utils.js";
 export const ifDirective = {
   selector: "rv-if",
   construct: function ( block , binding) {
-    let comment = new Comment('z-if');
+    let comment = new Comment('rv-if');
     
     return hook(() => {
 
