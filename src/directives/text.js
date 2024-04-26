@@ -1,16 +1,34 @@
 import { hook } from "apajs-streams";
-import { doBinding } from '../utils.js'
+import { doBinding } from "../utils.js";
 
 export const textDirective = {
-  selector: "rv-text",
-  construct: function ({ element }, binding) {
-    return hook(() => {
-      /**
-       * In case the element is being conditionally rendered or the value hasn't changed,
-       * we will prevent its content from being updated
-       */
-      if (element.textContent === doBinding(binding, element) || element instanceof Comment) return;
-      element.textContent = doBinding(binding, element);
-    });
-  },
+    selector: "rv-text",
+    construct: function (block, binding) {
+        let text = null;
+        if (block.element.tagName.toLowerCase() === this.selector) {
+            text = new Text();
+            block.element.replaceWith(text);
+        }
+
+        return hook(() => {
+            /**
+             * In case the element is being conditionally rendered or the value hasn't changed,
+             * we will prevent its content from being updated
+             */
+            if (
+                block.element.textContent ===
+                    doBinding(binding, block.element) ||
+                text?.textContent === doBinding(binding, block.element) ||
+                block.element instanceof Comment
+            )
+                return;
+
+            text
+                ? (text.textContent = doBinding(binding, text))
+                : (block.element.textContent = doBinding(
+                      binding,
+                      block.element
+                  ));
+        });
+    },
 };

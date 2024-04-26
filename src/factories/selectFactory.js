@@ -16,15 +16,22 @@ class Mountable extends Array {
  * @param { Object } parentCtx
  */
 const getCtx = (element, parentCtx) => {
-    let ctx = element.getAttributeNames()?.reduce((ctx, attribute) => {
-        if (attribute.startsWith(":"))
+    return element.getAttributeNames()?.reduce((ctx, attribute) => {
+
+        if (attribute.startsWith(":") && attribute !== ":") 
             (ctx[attribute.replaceAll(":", "")] =
-                parentCtx[element.getAttribute(attribute)] ??
-                element.getAttribute(attribute)) &&
-                element.removeAttribute(attribute);
-                return ctx;
+            parentCtx[element.getAttribute(attribute)] ??
+            element.getAttribute(attribute)) &&
+            element.removeAttribute(attribute);
+        
+       
+        if (attribute === ':') 
+            (ctx[element.tagName.toLowerCase()] =
+            parentCtx[element.getAttribute(attribute)] ) &&
+            element.removeAttribute(attribute);
+
+        return ctx
     }, {});
-    return ctx;
 };
 
 export const attachMagics = (HTMLElement, children = []) => {

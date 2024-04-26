@@ -23,7 +23,7 @@
         <li ref="person" :data-key="id">
           <span :rv-text="name"><?= $person->name ?? '' ?></span>
           <button :onclick="deletePerson" :data-deletes="id">
-            Delete person <span :rv-text="id"><?= $person->id ?? '' ?></span>
+            Delete person <rv-text :="id"><?= $person->id ?? '' ?></rv-text>
           </button>
         </li>
     HTML;
@@ -61,8 +61,8 @@
             <button :onclick="inc" data-increment-by="1">Inc count</button>
         </div>
         <div ref="CounterController" data-initial-count="2">
-            <span :rv-text="count" :test="count">0</span>
-            <button :onclick="inc" data-increment-by="2">Inc count</button>
+            <span  :test="count">Count is: <rv-text :="count">2</rv-text></span>
+            <button :onclick="inc" data-increment-by="1">Inc count</button>
         </div>
 
         <ul ref="SSR" data-track-by="id" data-populate='<?= json_encode($people)?>'>
