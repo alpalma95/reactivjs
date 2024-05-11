@@ -1,4 +1,4 @@
-![](logos/logo_big.png)
+![ReactivJS, or the modern jQuery](logos/logo_big.png)
 
 Bring your static HTML to life or create interactive client-side rendered islands _on the fly_. No build step required!
 
