@@ -1,4 +1,4 @@
-import { hook } from "apajs-streams";
+import { hook } from "@reactivjs/streams";
 import { safeRemove } from "../factories/effectsManager.js";
 import { attachMagics } from "../factories/selectFactory.js";
 

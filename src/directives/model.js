@@ -1,4 +1,4 @@
-import { hook } from "apajs-streams";
+import { hook } from "@reactivjs/streams";
 
 export const modelDirective = {
   selector: "rv-model",

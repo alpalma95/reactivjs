@@ -1,4 +1,4 @@
-import { hook } from "apajs-streams";
+import { hook } from "@reactivjs/streams";
 import { doBinding } from "../utils.js";
 
 /** @type {WeakMap<HTMLElement, Array>} */
