@@ -1,5 +1,5 @@
 {
-  "name": "@alpalma95/reactivjs",
+  "name": "@reactiv/reactivjs",
   "version": "0.1.3",
   "description": "Minimalistic reactivity engine for CSR and SSR. Heavily inspired by Stimulus, AlpineJS and VanJS.",
   "main": "/src/index.js",
