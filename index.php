@@ -54,18 +54,18 @@
   </head>
   <body>
         <h1> Generated server side </h1>
-        <div ref="count"></div>
+        <div data-ref="count"></div>
         <!-- "Props" are just dataset properties -->
-        <div ref="CounterController" data-initial-count="1" :rv-custom="t">
+        <div data-ref="CounterController" data-initial-count="1" :rv-custom="t">
             <span :rv-text="count" :test="count" :rv-custom="t">0</span>
             <button :onclick="inc" data-increment-by="1">Inc count</button>
         </div>
-        <div ref="CounterController" data-initial-count="2">
+        <div data-ref="CounterController" data-initial-count="2">
             <span  :test="count">Count is: <rv-text :="count">2</rv-text></span>
             <button :onclick="inc" data-increment-by="1">Inc count</button>
         </div>
 
-        <ul ref="SSR" data-track-by="id" data-populate='<?= json_encode($people)?>'>
+        <ul data-ref="SSR" data-track-by="id" data-populate='<?= json_encode($people)?>'>
           <?php foreach($people as $person):
             echo $PersonComponent($person);
           endforeach; ?>
@@ -76,12 +76,12 @@
           <?php endif; ?>
         </ul>
 
-        <div ref="FormController">
+        <div data-ref="FormController">
           <input type="text" :rv-model="text">
           <p :rv-text="text"></p>
           <p :rv-if="text">Input is not empty!</p>
           <button :onclick="clear">clear input</button>
         </div>
-    <div ref="app"> <!---Hydrated client side --> </div>
+    <div data-ref="app"> <!---Hydrated client side --> </div>
   </body>
 </html>

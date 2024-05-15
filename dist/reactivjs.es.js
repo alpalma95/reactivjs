@@ -3,15 +3,15 @@ const E = (t, e) => (Array.isArray(t) && (e = t, t = {}), [t, e]), S = (t, e) =>
     t,
     NodeFilter.SHOW_ELEMENT,
     function(c) {
-      var o;
-      return c.getAttribute("ref") == e || c.getAttributeNames().some((i) => i.includes(":")) && e === "createScope" ? NodeFilter.FILTER_ACCEPT : (o = c.getAttribute("ref")) != null && o.toUpperCase().includes("CONTROLLER") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
+      var o, i;
+      return c.getAttribute("ref") == e || c.dataset.ref == e || c.getAttributeNames().some((f) => f.includes(":")) && e === "createScope" ? NodeFilter.FILTER_ACCEPT : (o = c.getAttribute("ref")) != null && o.toUpperCase().includes("CONTROLLER") || (i = c.dataset.ref) != null && i.toUpperCase().includes("CONTROLLER") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
     }
   ), r = [];
   let s;
   for (; s = n.nextNode(); )
     r.push(s);
   return r;
-}, f = (t, e) => typeof t == "function" ? t(e) : t.val ?? t;
+}, u = (t, e) => typeof t == "function" ? t(e) : t.val ?? t;
 let h = null, y = /* @__PURE__ */ new WeakMap();
 class R {
   constructor(e) {
@@ -25,7 +25,7 @@ let l = (t) => {
   h = new R(t), h.cb();
   let e = h;
   return h = null, e;
-}, W = (t, e) => {
+}, L = (t, e) => {
   if (h === null)
     return;
   let n = ((r, s, c) => {
@@ -43,16 +43,16 @@ let l = (t) => {
     }
     return Object.fromEntries(Object.entries(n).map(([r, s]) => [r, typeof s == "object" || typeof s == "function" ? w(s) : s]));
   })(t);
-  return new Proxy(e, { get: (n, r, s) => (W(n, r), Reflect.get(n, r, s)), set: (n, r, s, c) => (n[r] !== s && (Reflect.set(n, r, s, c), ((o, i) => {
-    y.get(o) && y.get(o).get(i).forEach(({ cb: u }) => u());
+  return new Proxy(e, { get: (n, r, s) => (L(n, r), Reflect.get(n, r, s)), set: (n, r, s, c) => (n[r] !== s && (Reflect.set(n, r, s, c), ((o, i) => {
+    y.get(o) && y.get(o).get(i).forEach(({ cb: f }) => f());
   })(n, r)), !0) });
 };
-const F = {
+const W = {
   selector: "rv-class",
   construct: function({ element: t }, e) {
     return Object.entries(e).reduce((r, [s, c]) => {
       let o = l(() => {
-        !t.classList.contains(s) && f(c, t) && t.classList.add(s), t.classList.contains(s) && !f(c, t) && t.classList.remove(s);
+        !t.classList.contains(s) && u(c, t) && t.classList.add(s), t.classList.contains(s) && !u(c, t) && t.classList.remove(s);
       });
       return r.push(o), r;
     }, []);
@@ -63,14 +63,14 @@ const F = {
     t,
     n(e) ? [...r, ...e] : [...r, e]
   ) : p.set(t, [e]);
-}, L = (t) => {
+}, F = (t) => {
   var e;
   typeof (t == null ? void 0 : t.destroy) == "function" && t.destroy(t), (e = p.get(t)) == null || e.forEach((n) => {
     n.unhook();
   }), p.delete(t), t == null || t.remove();
 }, _ = (t, e, n) => {
   let r = l(
-    () => t.setAttribute(e, f(n, t))
+    () => t.setAttribute(e, u(n, t))
   );
   A(t, r);
 };
@@ -94,61 +94,61 @@ const j = (t, e) => {
     get: (e, n) => function(r, s = []) {
       let [c, o] = E(r, s);
       const i = [...S(t, n)];
-      let u = n === "createScope" ? c : null;
-      return u && i.push(t), i.forEach((a, d) => {
-        u && (c = j(a, u)), v({ element: a, ctx: c }), m(a, o), g(a, c);
+      let f = n === "createScope" ? c : null;
+      return f && i.push(t), i.forEach((a, d) => {
+        f && (c = j(a, f)), v({ element: a, ctx: c }), m(a, o), g(a, c);
       }), i.length === 1 ? i[0] : new P(...i);
     }
   }
-), K = x(), q = (t, e, n) => {
+), U = x(), N = (t, e, n) => {
   const r = e.children, { trackBy: s } = e.dataset;
   t.length < r.length && [...r].filter(
     (o) => !t.some((i) => o.dataset.key == i[s])
   ).forEach((o) => {
-    L(
+    F(
       e.querySelector(`[data-key="${o.dataset.key}"]`)
     );
   }), t.forEach((c, o) => {
     r[o] || e.appendChild(n(c));
-    const i = c[s] == r[o].dataset.key, u = t.length === r.length, a = `[data-key="${c[s]}"]`;
-    if (!i && u) {
+    const i = c[s] == r[o].dataset.key, f = t.length === r.length, a = `[data-key="${c[s]}"]`;
+    if (!i && f) {
       const d = e.querySelector(a) ?? n(c);
       e.replaceChild(d, r[o]);
     }
-    if (!i && !u) {
+    if (!i && !f) {
       const d = e.querySelector(a) ?? n(c);
       e.insertBefore(d, r[o]);
     }
   });
-}, N = (t, e) => {
+}, q = (t, e) => {
   var r;
   const n = ((r = t.children[0]) == null ? void 0 : r.cloneNode(!0)) ?? t.querySelector("template").content.children[0];
   return g(n), (s) => (e(s)(n), n);
-}, D = {
+}, T = {
   selector: "rv-for",
   construct: function({ element: t }, e) {
     var o;
     let [n, r, s] = e, c;
     if ((o = t.dataset) != null && o.populate) {
       const i = JSON.parse(t.dataset.populate);
-      n.val = s ? i.map(s) : i, t.removeAttribute("data-populate"), c = N(t, r);
+      n.val = s ? i.map(s) : i, t.removeAttribute("data-populate"), c = q(t, r);
     }
-    return c && n.val.forEach((i, u) => {
-      const a = t.children[u];
+    return c && n.val.forEach((i, f) => {
+      const a = t.children[f];
       g(a), r(i)(a);
     }), l(() => {
-      q(n.val, t, c ?? r);
+      N(n.val, t, c ?? r);
     });
   }
-}, T = {
+}, D = {
   selector: "rv-if",
   construct: function(t, e) {
     let n = new Comment("rv-if");
     return l(() => {
-      !f(e, t.element) && !t.element.isConnected && (t.replaceWith = n), n.isConnected && f(e, t.element) && (n.replaceWith(t.element), typeof t.element.init == "function" && t.element.init(t.element)), t.element.isConnected && !f(e, t.element) && (typeof t.element.destroy == "function" && t.element.destroy(t.element), t.element.replaceWith(n));
+      !u(e, t.element) && !t.element.isConnected && (t.replaceWith = n), n.isConnected && u(e, t.element) && (n.replaceWith(t.element), typeof t.element.init == "function" && t.element.init(t.element)), t.element.isConnected && !u(e, t.element) && (typeof t.element.destroy == "function" && t.element.destroy(t.element), t.element.replaceWith(n));
     });
   }
-}, I = {
+}, O = {
   selector: "rv-model",
   construct: function({ element: t }, e) {
     return t.addEventListener("input", () => {
@@ -157,32 +157,32 @@ const j = (t, e) => {
       t.value = e.val;
     });
   }
-}, $ = {
+}, I = {
   selector: "rv-show",
   construct: function({ element: t }, e) {
-    return l(() => t.style.display = f(e, t) ? null : "none");
+    return l(() => t.style.display = u(e, t) ? null : "none");
   }
-}, B = {
+}, $ = {
   selector: "rv-text",
   construct: function(t, e) {
     let n = null;
     return t.element.tagName.toLowerCase() === this.selector && (n = new Text(), t.element.replaceWith(n)), l(() => {
-      t.element.textContent === f(e, t.element) || (n == null ? void 0 : n.textContent) === f(e, t.element) || t.element instanceof Comment || (n ? n.textContent = f(e, n) : t.element.textContent = f(
+      t.element.textContent === u(e, t.element) || (n == null ? void 0 : n.textContent) === u(e, t.element) || t.element instanceof Comment || (n ? n.textContent = u(e, n) : t.element.textContent = u(
         e,
         t.element
       ));
     });
   }
-}, O = [
-  D,
-  B,
-  F,
-  $,
+}, B = [
   T,
-  I
+  $,
+  W,
+  I,
+  D,
+  O
 ], C = Object.fromEntries(
-  O.map((t) => [t.selector, t])
-), U = (...t) => {
+  B.map((t) => [t.selector, t])
+), K = (...t) => {
   t.forEach(
     (e) => C[e.selector] = e
   );
@@ -229,10 +229,10 @@ const j = (t, e) => {
   }
 );
 export {
-  K as $,
+  U as $,
   z as h,
   l as hook,
-  U as registerDirectives,
-  L as safeRemove,
+  K as registerDirectives,
+  F as safeRemove,
   w as stream
 };

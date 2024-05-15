@@ -3,7 +3,7 @@
  * Otherwise, we'd always need to pass an empty object if we only want to append children.
  * @param {any} props Props to be used as context for the hydration phase
  * @param {Array<HTMLElement>} children Children to be appended to the element we're hydrating
- * @returns 
+ * @returns
  */
 export const switchProps = (props, children) => {
     if (Array.isArray(props)) {
@@ -28,11 +28,18 @@ export const getRefs = (root, selector) => {
         function (node) {
             if (
                 node.getAttribute("ref") == selector ||
+                node.dataset.ref == selector ||
                 (node.getAttributeNames().some((name) => name.includes(":")) &&
                     selector === "createScope")
             )
                 return NodeFilter.FILTER_ACCEPT;
-            if (node.getAttribute("ref")?.toUpperCase().includes("CONTROLLER"))
+            if (
+                node
+                    .getAttribute("ref")
+                    ?.toUpperCase()
+                    .includes("CONTROLLER") ||
+                node.dataset.ref?.toUpperCase().includes("CONTROLLER")
+            )
                 return NodeFilter.FILTER_REJECT;
 
             return NodeFilter.FILTER_SKIP;
