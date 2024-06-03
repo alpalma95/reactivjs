@@ -1,4 +1,5 @@
 import { directives } from "../directives/registerDirectives.js";
+import { textDirective } from "../directives/text.js";
 import { bindAttribute, registerEffect } from "./effectsManager.js";
 
 export const hydrate = (block) => {
@@ -20,13 +21,16 @@ export const hydrate = (block) => {
             if (effect) registerEffect(block.element, effect);
             continue;
         }
-        
+
         if (isEventHandler) {
             block.element.addEventListener(attr.slice(2), block.ctx[attr]);
             continue;
         }
 
-        if (typeof block.ctx[attr] === "function" || typeof block.ctx[attr] === 'object') {
+        if (
+            typeof block.ctx[attr] === "function" ||
+            typeof block.ctx[attr] === "object"
+        ) {
             bindAttribute(block.element, attr, block.ctx[attr]);
             continue;
         }
@@ -44,6 +48,12 @@ export const appendChildren = (element, children) => {
                 child instanceof DocumentFragment
                     ? child
                     : new Text(child);
+
+            if (typeof child === "function")
+                registerEffect(
+                    currentNode,
+                    textDirective.construct({ element: currentNode }, child)
+                );
 
             element.appendChild(currentNode);
         });

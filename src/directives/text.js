@@ -5,7 +5,7 @@ export const textDirective = {
     selector: "rv-text",
     construct: function (block, binding) {
         let text = null;
-        if (block.element.tagName.toLowerCase() === this.selector) {
+        if (block.element.tagName?.toLowerCase() === this.selector) {
             text = new Text();
             block.element.replaceWith(text);
         }
