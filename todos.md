@@ -11,6 +11,4 @@ easy to work around and not really expensive, so holding it for now
 
 - data-model only works for input type text, it should work for all inputs
 
-- provide a way of initializing the library so it can accept custom directives
-
-- would be nice to interpolate data-text variables
+- Tests for everything related to hydration of existing DOM

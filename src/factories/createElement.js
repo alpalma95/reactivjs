@@ -1,7 +1,7 @@
 import { switchProps } from "../utils.js";
 import { appendChildren, hydrate } from "./shared.js";
 
-const html = (tagName) => {
+export const html = (tagName) => {
   return function (props_raw, children_raw = []) {
     let [props, children] = switchProps(props_raw, children_raw)
 

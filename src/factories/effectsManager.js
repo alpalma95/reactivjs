@@ -2,7 +2,7 @@ import { hook } from "@reactivjs/streams";
 import { doBinding } from "../utils.js";
 
 /** @type {WeakMap<HTMLElement, Array>} */
-const DOMEffectsMap = new WeakMap();
+export const DOMEffectsMap = new WeakMap();
 
 export const registerEffect = (element, effect) => {
     let { isArray } = Array;
