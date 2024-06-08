@@ -126,4 +126,19 @@ describe("for directive", () => {
             "./snapshots/for/transformFn.output.html"
         );
     });
+
+    it('should keep on transforming the data if transformFn is provided', () => {
+        const nums = stream([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        const template = (item, i) => h.li({'data-key': item.val}, [item.val, ` at index ${i}`])
+        const Test = () => {
+            return h.ul({'data-track-by': 'val', 'rv-for': [nums, template, (n) => ({val: n})]})
+        }
+        
+        nums.val = [...nums.val, 11]
+
+        expect(Test()).toMatchSnapshot(
+            "./snapshots/for/transformFnUpdate.output.html"
+        );
+        
+    })
 });
