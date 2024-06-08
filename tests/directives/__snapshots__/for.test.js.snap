@@ -1,0 +1,138 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`for directive > should transform the data if transformFn is provided > ./snapshots/for/transformFn.output.html 1`] = `
+<ul
+  data-track-by="val"
+>
+  <li
+    data-key="1"
+  >
+    1
+  </li>
+  <li
+    data-key="2"
+  >
+    2
+  </li>
+  <li
+    data-key="3"
+  >
+    3
+  </li>
+  <li
+    data-key="4"
+  >
+    4
+  </li>
+  <li
+    data-key="5"
+  >
+    5
+  </li>
+  <li
+    data-key="6"
+  >
+    6
+  </li>
+  <li
+    data-key="7"
+  >
+    7
+  </li>
+  <li
+    data-key="8"
+  >
+    8
+  </li>
+  <li
+    data-key="9"
+  >
+    9
+  </li>
+  <li
+    data-key="10"
+  >
+    10
+  </li>
+</ul>
+`;
+
+exports[`for directive > should work with nested loops > ./snapshots/for/nested.output.html 1`] = `
+<ul
+  data-track-by="id"
+>
+  <li
+    data-key="1"
+  >
+    one
+    
+  </li>
+  <li
+    data-key="2"
+  >
+    two
+    <ul
+      data-track-by="id"
+    >
+      <li
+        data-key="4"
+      >
+        four
+        
+      </li>
+      <li
+        data-key="5"
+      >
+        five
+        
+      </li>
+      <li
+        data-key="6"
+      >
+        six
+        
+      </li>
+    </ul>
+  </li>
+  <li
+    data-key="3"
+  >
+    three
+    
+  </li>
+</ul>
+`;
+
+exports[`for directive > should work with nested loops > ./snapshots/for/nestedModified.output.html 1`] = `
+<ul
+  data-track-by="id"
+>
+  <li
+    data-key="1"
+  >
+    one
+    
+  </li>
+  <li
+    data-key="2"
+  >
+    two
+    <ul
+      data-track-by="id"
+    >
+      <li
+        data-key="7"
+      >
+        seven
+        
+      </li>
+    </ul>
+  </li>
+  <li
+    data-key="3"
+  >
+    three
+    
+  </li>
+</ul>
+`;

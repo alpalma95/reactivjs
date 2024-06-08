@@ -17,13 +17,18 @@
   foreach ($people_ssr as $person) {
     $people[] = (object)$person;
   }
-
   $PersonComponent = function($person = null) {
+    if (!$person) {
+      $person = (object)[
+        'id' => 0,
+        'name' => 'No person selected'
+      ];
+    }
     return <<<HTML
         <li ref="person" :data-key="id">
-          <span :rv-text="name"><?= $person->name ?? '' ?></span>
+          <span :rv-text="name"> $person->name </span>
           <button :onclick="deletePerson" :data-deletes="id">
-            Delete person <rv-text :="id"><?= $person->id ?? '' ?></rv-text>
+            Delete person <rv-text :="id"> $person->id </rv-text>
           </button>
         </li>
     HTML;

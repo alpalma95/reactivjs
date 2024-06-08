@@ -17,4 +17,11 @@ describe("h", () => {
     it("should work with custom elements", () => {
         expect(h["custom-element"]()).toBeInstanceOf(HTMLElement);
     });
+
+    it('should trigger init method if it exists', () => {
+        let count = 0
+        h.div({ init: () => count++ });
+        expect(count).toBe(1);
+
+    })
 });

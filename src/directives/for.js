@@ -1,4 +1,4 @@
-import { hook } from "@reactivjs/streams";
+import { hook, stream } from "@reactivjs/streams";
 import { safeRemove } from "../factories/effectsManager.js";
 import { attachMagics } from "../factories/selectFactory.js";
 
@@ -25,7 +25,7 @@ const diffList = (array, DOMNode, template) => {
     }
 
     array.forEach((element, index) => {
-        if (!children[index]) DOMNode.appendChild(template(element));
+        if (!children[index]) DOMNode.appendChild(template(element, index));
 
         const isEqual = element[trackBy] == children[index].dataset.key;
         const areSameLength = array.length === children.length;
@@ -33,12 +33,12 @@ const diffList = (array, DOMNode, template) => {
 
         if (!isEqual && areSameLength) {
             const newNode =
-                DOMNode.querySelector(queryStr) ?? template(element);
+                DOMNode.querySelector(queryStr) ?? template(element, index);
             DOMNode.replaceChild(newNode, children[index]);
         }
         if (!isEqual && !areSameLength) {
             const newNode =
-                DOMNode.querySelector(queryStr) ?? template(element);
+                DOMNode.querySelector(queryStr) ?? template(element, index);
             DOMNode.insertBefore(newNode, children[index]);
         }
     });
@@ -67,22 +67,25 @@ export const forDirective = {
         let ssr_template;
 
         if (listContainer.dataset?.populate) {
-            const raw_list = JSON.parse(listContainer.dataset.populate);
-            arr.val = fn ? raw_list.map(fn) : raw_list;
+            arr.val = JSON.parse(listContainer.dataset.populate);
             listContainer.removeAttribute("data-populate");
             ssr_template = getTemplateFromDOM(listContainer, template);
         }
+
+        const __arr = stream(() => fn ? arr.val.map(fn) : arr.val);
+
+
         if (ssr_template) {
             // At this point, state and child nodes should be the same length
-            arr.val.forEach((listItem, index) => {
+            __arr.val.forEach((listItem, index) => {
                 const currentChild = listContainer.children[index];
                 attachMagics(currentChild);
-                template(listItem)(currentChild);
+                template(listItem, index)(currentChild);
             });
         }
 
         return hook(() => {
-            diffList(arr.val, listContainer, ssr_template ?? template);
+            diffList(__arr.val, listContainer, ssr_template ?? template);
         });
     },
 };

@@ -17,20 +17,18 @@ class Mountable extends Array {
  */
 const getCtx = (element, parentCtx) => {
     return element.getAttributeNames()?.reduce((ctx, attribute) => {
-
-        if (attribute.startsWith(":") && attribute !== ":") 
+        if (attribute.startsWith(":") && attribute !== ":")
             (ctx[attribute.replaceAll(":", "")] =
-            parentCtx[element.getAttribute(attribute)] ??
-            element.getAttribute(attribute)) &&
-            element.removeAttribute(attribute);
-        
-       
-        if (attribute === ':') 
-            (ctx[element.tagName.toLowerCase()] =
-            parentCtx[element.getAttribute(attribute)] ) &&
-            element.removeAttribute(attribute);
+                parentCtx[element.getAttribute(attribute)] ??
+                element.getAttribute(attribute)) &&
+                element.removeAttribute(attribute);
 
-        return ctx
+        if (attribute === ":")
+            (ctx[element.tagName.toLowerCase()] =
+                parentCtx[element.getAttribute(attribute)]) &&
+                element.removeAttribute(attribute);
+
+        return ctx;
     }, {});
 };
 
@@ -55,11 +53,15 @@ export const createSelectProxy = (root = document) =>
                     const found = [...getRefs(root, value)];
                     let parentScope = value === "createScope" ? ctx : null;
                     if (parentScope) found.push(root);
-                    found.forEach((element, i) => {
+                    found.forEach((element) => {
                         if (parentScope) ctx = getCtx(element, parentScope);
-                        hydrate({ element, ctx });
+                        const block = { element, ctx };
+                        hydrate(block);
                         appendChildren(element, children);
                         attachMagics(element, ctx, children);
+                        block.element.init &&
+                            typeof block.element.init === "function" &&
+                            block.element.init();
                     });
                     return found.length === 1
                         ? found[0]

@@ -10,7 +10,6 @@ export const hydrate = (block) => {
 
         // TODO: "Magic methods, we shall look for a better place for them"
         if (attr === "init" || attr === "destroy") {
-            if (attr === "init") block.ctx[attr](block.element);
             block.element[attr] = block.ctx[attr];
             continue;
         }
@@ -29,7 +28,9 @@ export const hydrate = (block) => {
 
         if (
             typeof block.ctx[attr] === "function" ||
-            typeof block.ctx[attr] === "object"
+            // This is because of the data-populate attribute for the rv-for directive.
+            // Maybe not the best place ?
+            typeof block.ctx[attr] === "object" 
         ) {
             bindAttribute(block.element, attr, block.ctx[attr]);
             continue;

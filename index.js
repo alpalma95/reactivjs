@@ -1,5 +1,5 @@
 
-import { registerDirectives, h, stream, $} from "./src";
+import { registerDirectives, h, stream, $, hook} from "./src";
 
 export const customDirective = {
     selector: "rv-custom",
@@ -165,7 +165,51 @@ registerDirectives(customDirective)
 //         Counter(),
 //     ]);
 
-// $.app([App()])
+
+// const nums = stream([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+// const template = (item, i) => h.li({'data-key': item.val}, [item.val, ` at index ${i}`])
+// const Test = () => {
+//     return h.ul({'data-track-by': 'val', 'rv-for': [nums, template, (n) => ({val: n})]})
+// }
+
+// setTimeout(() => {
+//     nums.val = [...nums.val, 11]
+// }, 1000);
+
+// $.app([Test()])
+
+let test = stream(true)
+
+let chb = () => {
+    return h.input({ type: 'checkbox', 'rv-model': test })
+}
+let s = () => {
+    let selected = stream("")
+    let f = h.fragment([
+        "selected: ", ()=> selected.val,
+        h.select({ 'rv-model': selected }, [
+            h.option({ value: "" }, [""]),
+            h.option({ value: "a" }, ["a"]),
+            h.option({ value: "b" }, ["b"]),
+            h.option({ value: "c" }, ["c"]),
+        ])
+
+    ])
+    return f
+}
+
+let r = () => {
+    let selected = stream(0)
+    let f = h.fragment([
+        "selected: ", ()=> selected.val,
+        h.input({ type: 'range', 'rv-model': selected, min: 0, max: 10, step: 1 })
+    ])
+    return f
+}
+
+hook(() => console.log(test.val))
+
+$.app([chb(), s(), r()])
 
 // $.count({ 'rv-text': () => "hi" }) // this won't affect the count refs inside counter controller
 $.CounterController().mount(function({ $, dataset }) {

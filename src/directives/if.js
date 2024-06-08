@@ -8,15 +8,15 @@ export const ifDirective = {
     
     return hook(() => {
 
-        if (!doBinding(binding, block.element) && !block.element.isConnected) block.replaceWith = comment
+        if (!doBinding(binding, block.element) && !block.element.parentElement) block.replaceWith = comment
         
-        if (comment.isConnected && doBinding(binding, block.element)) {
+        if (comment.parentElement && doBinding(binding, block.element)) {
           comment.replaceWith(block.element)
 
           if (typeof block.element.init === 'function')
             block.element.init(block.element)
         }
-        if (block.element.isConnected && !doBinding(binding, block.element)) {
+        if (block.element.parentElement && !doBinding(binding, block.element)) {
           if (typeof block.element.destroy === 'function') 
             block.element.destroy(block.element)
           
