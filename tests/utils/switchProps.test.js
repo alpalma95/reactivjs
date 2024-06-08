@@ -1,4 +1,4 @@
-import { switchProps } from "../../../src/utils";
+import { switchProps } from "../../src/utils";
 
 describe("switchProps", () => {
     it("should return an array with the props and children", () => {

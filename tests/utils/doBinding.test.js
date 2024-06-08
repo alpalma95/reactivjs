@@ -1,6 +1,6 @@
 import { expect } from "vitest";
-import { h, stream } from "../../../src";
-import { doBinding } from "../../../src/utils";
+import { h, stream } from "../../src";
+import { doBinding } from "../../src/utils";
 
 describe('Utils > doBinding', () => {
     
