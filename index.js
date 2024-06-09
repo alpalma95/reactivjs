@@ -178,6 +178,8 @@ registerDirectives(customDirective)
 
 // $.app([Test()])
 
+
+
 let test = stream(true)
 
 let chb = () => {
@@ -186,7 +188,7 @@ let chb = () => {
 let s = () => {
     let selected = stream("")
     let f = h.fragment([
-        "selected: ", ()=> selected.val,
+        ...h.txt`selected: ${() =>selected.val}`,
         h.select({ 'rv-model': selected }, [
             h.option({ value: "" }, [""]),
             h.option({ value: "a" }, ["a"]),

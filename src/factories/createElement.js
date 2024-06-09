@@ -23,12 +23,17 @@ export const html = (tagName) => {
         return block.replaceWith ?? block.element;
     };
 };
-
+let txt = (str, ...args) => 
+    str.reduce((acc, cur, i) => [...acc, ...[cur, args[i] ?? ""]], [])
 export const h = new Proxy(
     {},
     {
         get: function (target, value) {
-            if (!(value in target)) Reflect.set(target, value, html(value));
+            if (!(value in target)) Reflect.set(
+                target, 
+                value, 
+                value === 'txt' ? txt : html(value)
+            );
 
             return target[value];
         },

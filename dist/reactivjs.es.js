@@ -57,7 +57,7 @@ const F = {
       return r.push(o), r;
     }, []);
   }
-}, y = /* @__PURE__ */ new WeakMap(), v = (t, e) => {
+}, y = /* @__PURE__ */ new WeakMap(), g = (t, e) => {
   let { isArray: n } = Array, r = y.get(t);
   r ? y.set(
     t,
@@ -72,7 +72,7 @@ const F = {
   let r = p(
     () => t.setAttribute(e, a(n, t))
   );
-  v(t, r);
+  g(t, r);
 };
 class T extends Array {
   mount(e) {
@@ -82,7 +82,7 @@ class T extends Array {
 const j = (t, e) => {
   var n;
   return (n = t.getAttributeNames()) == null ? void 0 : n.reduce((r, s) => (s.startsWith(":") && s !== ":" && (r[s.replaceAll(":", "")] = e[t.getAttribute(s)] ?? t.getAttribute(s)) && t.removeAttribute(s), s === ":" && (r[t.tagName.toLowerCase()] = e[t.getAttribute(s)]) && t.removeAttribute(s), r), {});
-}, g = (t, e = []) => {
+}, v = (t, e = []) => {
   t.$ = C(t), t.mount = function(n) {
     n(t);
   }, t.setProps = function(n) {
@@ -98,11 +98,11 @@ const j = (t, e) => {
       return f && i.push(t), i.forEach((l) => {
         f && (c = j(l, f));
         const u = { element: l, ctx: c };
-        E(u), w(l, o), g(l, c), u.element.init && typeof u.element.init == "function" && u.element.init();
+        E(u), w(l, o), v(l, c), u.element.init && typeof u.element.init == "function" && u.element.init();
       }), i.length === 1 ? i[0] : new T(...i);
     }
   }
-), K = C(), I = (t, e, n) => {
+), z = C(), I = (t, e, n) => {
   const r = e.children, { trackBy: s } = e.dataset;
   t.length < r.length && [...r].filter(
     (o) => !t.some((i) => o.dataset.key == i[s])
@@ -125,7 +125,7 @@ const j = (t, e) => {
 }, q = (t, e) => {
   var r;
   const n = ((r = t.children[0]) == null ? void 0 : r.cloneNode(!0)) ?? t.querySelector("template").content.children[0];
-  return g(n), (s) => (e(s)(n), n);
+  return v(n), (s) => (e(s)(n), n);
 }, D = {
   selector: "rv-for",
   construct: function({ element: t }, e) {
@@ -135,7 +135,7 @@ const j = (t, e) => {
     const o = m(() => s ? n.val.map(s) : n.val);
     return c && o.val.forEach((f, l) => {
       const u = t.children[l];
-      g(u), r(f, l)(u);
+      v(u), r(f, l)(u);
     }), p(() => {
       I(o.val, t, c ?? r);
     });
@@ -188,7 +188,7 @@ const j = (t, e) => {
   U
 ], R = Object.fromEntries(
   B.map((t) => [t.selector, t])
-), z = (...t) => {
+), G = (...t) => {
   t.forEach(
     (e) => R[e.selector] = e
   );
@@ -202,7 +202,7 @@ const j = (t, e) => {
     }
     if (n) {
       let s = n.construct(t, t.ctx[e]);
-      s && v(t.element, s);
+      s && g(t.element, s);
       continue;
     }
     if (r) {
@@ -220,7 +220,7 @@ const j = (t, e) => {
 }, w = (t, e) => {
   e.length && e.forEach((n) => {
     let r = n instanceof HTMLElement || n instanceof Comment || n instanceof DocumentFragment ? n : new Text(n);
-    typeof n == "function" && v(
+    typeof n == "function" && g(
       r,
       S.construct({ element: r }, n)
     ), t.appendChild(r);
@@ -231,19 +231,25 @@ const j = (t, e) => {
     ctx: r
   };
   return E(c), w(c.element, s), c.element.init && typeof c.element.init == "function" && c.element.init(), c.replaceWith ?? c.element;
-}, G = new Proxy(
+};
+let K = (t, ...e) => t.reduce((n, r, s) => [...n, r, e[s] ?? ""], []);
+const Q = new Proxy(
   {},
   {
     get: function(t, e) {
-      return e in t || Reflect.set(t, e, J(e)), t[e];
+      return e in t || Reflect.set(
+        t,
+        e,
+        e === "txt" ? K : J(e)
+      ), t[e];
     }
   }
 );
 export {
-  K as $,
-  G as h,
+  z as $,
+  Q as h,
   p as hook,
-  z as registerDirectives,
+  G as registerDirectives,
   N as safeRemove,
   m as stream
 };
