@@ -1,15 +1,13 @@
-
-import { registerDirectives, h, stream, $, hook} from "./src";
+import { registerDirectives, h, stream, $, hook } from "./src";
 
 export const customDirective = {
     selector: "rv-custom",
     construct: function ({ element }, args) {
-        console.log(element, "custom directive working!", args)
+        console.log(element, "custom directive working!", args);
     },
-  };
+};
 
-registerDirectives(customDirective)
-
+registerDirectives(customDirective);
 
 // const $list = stream([
 //     {
@@ -154,7 +152,7 @@ registerDirectives(customDirective)
 
 // const App = () =>
 //     h.fragment([
-//         h.h2([ 
+//         h.h2([
 //             "Generated client side"
 //         ]),
 //         TestIf(),
@@ -164,7 +162,6 @@ registerDirectives(customDirective)
 //         Counter({ "data-whatever": "test1" }), // to be merged with the root element of the component
 //         Counter(),
 //     ]);
-
 
 // const nums = stream([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 // const template = (item, i) => h.li({'data-key': item.val}, [item.val, ` at index ${i}`])
@@ -178,70 +175,79 @@ registerDirectives(customDirective)
 
 // $.app([Test()])
 
-
-
-let test = stream(true)
+let test = stream(true);
 
 let chb = () => {
-    return h.input({ type: 'checkbox', 'rv-model': test })
-}
+    return h.input({ type: "checkbox", "rv-model": test });
+};
 let s = () => {
-    let selected = stream("")
+    let selected = stream("");
     let f = h.fragment([
-        ...h.txt`selected: ${() =>selected.val}`,
-        h.select({ 'rv-model': selected }, [
+        ...h.txt`selected: ${() => selected.val}`,
+        h.select({ "rv-model": selected }, [
             h.option({ value: "" }, [""]),
             h.option({ value: "a" }, ["a"]),
             h.option({ value: "b" }, ["b"]),
             h.option({ value: "c" }, ["c"]),
-        ])
-
-    ])
-    return f
-}
+        ]),
+    ]);
+    return f;
+};
 
 let r = () => {
-    let selected = stream(0)
+    let selected = stream(0);
     let f = h.fragment([
-        "selected: ", ()=> selected.val,
-        h.input({ type: 'range', 'rv-model': selected, min: 0, max: 10, step: 1 })
-    ])
-    return f
-}
+       ...h.txt`selected: ${() => selected.val}`,
+        h.input({
+            type: "range",
+            "rv-model": selected,
+            min: 0,
+            max: 10,
+            step: 1,
+        }),
+    ]);
+    return f;
+};
 
-hook(() => console.log(test.val))
+hook(() => console.log(test.val));
 
-$.app([chb(), s(), r()])
+$.app([chb(), s(), r()]);
 
 // $.count({ 'rv-text': () => "hi" }) // this won't affect the count refs inside counter controller
-$.CounterController().mount(function({ $, dataset }) {
-    let count = stream(+dataset.initialCount)
-    $.createScope({ 
-        count,
-        inc: ({ currentTarget }) => count.val += +currentTarget.dataset.incrementBy,
-        showHidden: () => count.val > 0 && count.val % 2 === 0
-    })
-})
-
-$.FormController().mount( ({ $ }) => {
-    const text = stream('')
-
-    $.createScope({ text, clear: () => text.val = '' })
-})
-
-let ssr_people = stream([])
-const PersonItemController = (person) => ({ $ }) => {
+$.CounterController().mount(function ({ $, dataset }) {
+    let count = stream(+dataset.initialCount);
     $.createScope({
-        name: person.name,
-        id: person.id,
-        deletePerson: () => ssr_people.val = [... ssr_people.val.filter((p) => p.id != person.id)]
-    })
-}
+        count,
+        inc: ({ currentTarget }) =>
+            (count.val += +currentTarget.dataset.incrementBy),
+        showHidden: () => count.val > 0 && count.val % 2 === 0,
+    });
+});
 
-const transformFn = (item) => ({...item, test: true})
+$.FormController().mount(({ $ }) => {
+    const text = stream("");
 
-$.SSR({ 'rv-for': [ssr_people, PersonItemController, transformFn] })
+    $.createScope({ text, clear: () => (text.val = "") });
+});
+
+let ssr_people = stream([]);
+const PersonItemController =
+    (person) =>
+    ({ $ }) => {
+        $.createScope({
+            name: person.name,
+            id: person.id,
+            deletePerson: () =>
+                (ssr_people.val = [
+                    ...ssr_people.val.filter((p) => p.id != person.id),
+                ]),
+        });
+    };
+
+const transformFn = (item) => ({ ...item, test: true });
+
+$.SSR({ "rv-for": [ssr_people, PersonItemController, transformFn] });
 
 setTimeout(() => {
-    ssr_people.val = [...ssr_people.val, {id: 4, name: "Test 4"}]
+    ssr_people.val = [...ssr_people.val, { id: 4, name: "Test 4" }];
 }, 3000);
